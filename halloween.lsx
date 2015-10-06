@@ -1,18 +1,17 @@
 <SCENE>
 
 <INITIALS>
-<frustum near="ff" far="ff"/>                      <!-- frustum planes-->
-    <translate x="ff" y="ff" z="ff" />                 <!-- initial translate -->
-    <rotation axis="cc" angle="ff" />                  <!-- initial rotation 3 -->
-    <rotation axis="cc" angle="ff" />                  <!-- initial rotation 2 -->
-    <rotation axis="cc" angle="ff" />                  <!-- initial rotation 1 -->
-    <scale sx="ff" sy="ff" sz="ff" />                  <!-- initial scaling -->
-    <reference length="ff" />                          <!-- axis length; "0" means no axis-->
+<frustum near="0.1" far="500"/>          
+    <translation x="-1" y="1" z="0" />               
+    <rotation axis="x" angle="0" />                
+    <rotation axis="y" angle="0" />                
+    <rotation axis="z" angle="0" />                
+    <scale sx="0.25" sy="0.25" sz="0.25" />         
+    <reference length="5" />   
 </INITIALS>
 
 <ILLUMINATION>
     <ambient r="0.2" g="0.2" b="0.2" a="1.0" />            <!-- global ambient -->
-    <doubleside value="false" />                          <!-- double or single side illum. -->
     <background r="0.2" g="0.2" b="0.2" a="0.2" />         <!-- background color -->
 </ILLUMINATION>
 

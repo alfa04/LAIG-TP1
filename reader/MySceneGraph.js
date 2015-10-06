@@ -40,6 +40,13 @@ MySceneGraph.prototype.onXMLReady=function()
 	this.scene.onGraphLoaded();
 };
 
+MySceneGraph.prototype.parseInitials= function(rootElement) {
+
+	console.log("INITIALS: \n");
+
+	this.initialsInfo={};
+
+}
 
 
 /*
