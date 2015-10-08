@@ -41,7 +41,20 @@ MySceneGraph.prototype.onXMLReady=function()
 		return;
 	}	
 
+	var error = this.parseLights(rootElement);
+
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+
 	var error = this.parseTextures(rootElement);
+
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+	var error = this.parseMaterials(rootElement);
 
 	if (error != null) {
 		this.onXMLError(error);
@@ -188,21 +201,98 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
 //Parser LIGTHS
 MySceneGraph.prototype.parseLights= function(rootElement) {
 
-	var lights = rootElement.getElementsByTagName("LIGHTS");
-	if(lights == null) return "'LIGHTS' tag is missing.";
-	if(lights.length != 1) return "More than one 'LIGHTS' tag.";
 
-	var allLights = lights[0];
+	
+	console.log("LIGHTS: \n");
 
-	var light = allLights.getElementsByTagName("LIGHT");
-	if(light == null) return "'LIGHT' tag is missing.";
+	var lights = rootElement.getElementsByTagName('LIGHTS');
+	if(lights == null) return "LIGHTS tag not found!";
 
-	for(var i=0; i<light.length; i++) {
-		var currLight = [];
-	var id="";
-		//IDs
-		this.light[i].id = this.reader.getString(light[i],"id",true);
-		console.log(this.light.id );
+	var lightsInfo = lights[0];
+
+	var light = lightsInfo.getElementsByTagName('LIGHT');
+	if(light == null) return "LIGTH tag not found!";
+
+	for(var i = 0; i < light.length; i++){
+
+	
+	var lightInfo = light[i];
+
+	this.lightInfo = [];
+	this.lightInfo["id"] = this.reader.getString(lightInfo, "id", true);
+
+	console.log("\tLIGHT id: " + this.lightInfo["id"] + "\n");
+	
+	//enable
+	var enable = lightInfo.getElementsByTagName('enable');
+	if(enable == null) return "enable tag not found!";
+
+	var enableInfo = enable[0];
+
+	this.enableInfo = [];
+	this.enableInfo["value"] =  this.reader.getItem(enableInfo, 'value', ["true","false"]);
+
+	console.log("\tenable value: " + this.enableInfo["value"] + "\n");
+	
+	//position
+	var position = lightInfo.getElementsByTagName("position");
+	if(position == null) return "position not found!";
+
+	console.log("position: ");
+
+	var positionInfo = position[0];
+	this.positionInfo = [];
+	this.positionInfo["x"] = this.reader.getFloat(positionInfo, "x", true);
+	this.positionInfo["y"] = this.reader.getFloat(positionInfo, "y", true);
+	this.positionInfo["z"] = this.reader.getFloat(positionInfo, "z", true);
+	this.positionInfo["w"] = this.reader.getFloat(positionInfo, "w", true);
+
+	console.log("\t\t\R: " + this.positionInfo["r"] + ", G: " + this.positionInfo["g"] + ", B: " + this.positionInfo["g"] + ", A: " + this.positionInfo["a"] + "\n");
+
+	//ambient
+	var ambient = lightInfo.getElementsByTagName("ambient");
+	if(ambient == null) return "ambient not found!";
+
+	console.log("ambient: ");
+
+	var ambientInfo = ambient[0];
+	this.ambientInfo = [];
+	this.ambientInfo["r"] = this.reader.getFloat(ambientInfo, "r", true);
+	this.ambientInfo["g"] = this.reader.getFloat(ambientInfo, "g", true);
+	this.ambientInfo["b"] = this.reader.getFloat(ambientInfo, "b", true);
+	this.ambientInfo["a"] = this.reader.getFloat(ambientInfo, "a", true);
+
+	console.log("\t\t\R: " + this.ambientInfo["r"] + ", G: " + this.ambientInfo["g"] + ", B: " + this.ambientInfo["g"] + ", A: " + this.ambientInfo["a"] + "\n");
+	
+	//diffuse
+	var diffuse = lightInfo.getElementsByTagName("diffuse");
+	if(diffuse == null) return "diffuse not found!";
+
+	console.log("diffuse: ");
+
+	var diffuseInfo = diffuse[0];
+	this.diffuseInfo = [];
+	this.diffuseInfo["r"] = this.reader.getFloat(diffuseInfo, "r", true);
+	this.diffuseInfo["g"] = this.reader.getFloat(diffuseInfo, "g", true);
+	this.diffuseInfo["b"] = this.reader.getFloat(diffuseInfo, "b", true);
+	this.diffuseInfo["a"] = this.reader.getFloat(diffuseInfo, "a", true);
+
+	console.log("\t\t\R: " + this.diffuseInfo["r"] + ", G: " + this.diffuseInfo["g"] + ", B: " + this.diffuseInfo["g"] + ", A: " + this.diffuseInfo["a"] + "\n");
+	
+	//specular
+	var specular = lightInfo.getElementsByTagName("specular");
+	if(specular == null) return "specular not found!";
+
+	console.log("specular: ");
+
+	var specularInfo = specular[0];
+	this.specularInfo = [];
+	this.specularInfo["r"] = this.reader.getFloat(specularInfo, "r", true);
+	this.specularInfo["g"] = this.reader.getFloat(specularInfo, "g", true);
+	this.specularInfo["b"] = this.reader.getFloat(specularInfo, "b", true);
+	this.specularInfo["a"] = this.reader.getFloat(specularInfo, "a", true);
+
+	console.log("\t\t\R: " + this.specularInfo["r"] + ", G: " + this.specularInfo["g"] + ", B: " + this.specularInfo["g"] + ", A: " + this.specularInfo["a"] + "\n");
 
 	}
 
@@ -257,7 +347,101 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 }
 
 //Parser MATERIALS
-MySceneGraph.prototype.parseMaterials= function(rootElement) {}
+MySceneGraph.prototype.parseMaterials= function(rootElement) {
+
+
+	console.log("MATERIALS: \n");
+
+	var lights = rootElement.getElementsByTagName('MATERIALS');
+	if(lights == null) return "MATERIALS tag not found!";
+
+	var lightsInfo = lights[0];
+
+	var light = lightsInfo.getElementsByTagName('MATERIAL');
+	if(light == null) return "MATERIAL tag not found!";
+
+	for(var i = 0; i < light.length; i++){
+
+	
+	var lightInfo = light[i];
+
+	this.lightInfo = [];
+	this.lightInfo["id"] = this.reader.getString(lightInfo, "id", true);
+
+	console.log("\tMATERIAL id: " + this.lightInfo["id"] + "\n");
+	
+	//shininess
+	var shininess = lightInfo.getElementsByTagName('shininess');
+	if(shininess == null) return "shininess tag not found!";
+
+	var enableInfo = shininess[0];
+
+	this.enableInfo = [];
+	this.enableInfo["value"] =  this.reader.getFloat(enableInfo, 'value', true);
+
+	console.log("\tenable value: " + this.enableInfo["value"] + "\n");
+	
+
+
+	//ambient
+	var ambient = lightInfo.getElementsByTagName("ambient");
+	if(ambient == null) return "ambient not found!";
+
+	console.log("ambient: ");
+
+	var ambientInfo = ambient[0];
+	this.ambientInfo = [];
+	this.ambientInfo["r"] = this.reader.getFloat(ambientInfo, "r", true);
+	this.ambientInfo["g"] = this.reader.getFloat(ambientInfo, "g", true);
+	this.ambientInfo["b"] = this.reader.getFloat(ambientInfo, "b", true);
+	this.ambientInfo["a"] = this.reader.getFloat(ambientInfo, "a", true);
+
+	console.log("\t\t\R: " + this.ambientInfo["r"] + ", G: " + this.ambientInfo["g"] + ", B: " + this.ambientInfo["g"] + ", A: " + this.ambientInfo["a"] + "\n");
+	
+	//diffuse
+	var diffuse = lightInfo.getElementsByTagName("diffuse");
+	if(diffuse == null) return "diffuse not found!";
+
+	console.log("diffuse: ");
+
+	var diffuseInfo = diffuse[0];
+	this.diffuseInfo = [];
+	this.diffuseInfo["r"] = this.reader.getFloat(diffuseInfo, "r", true);
+	this.diffuseInfo["g"] = this.reader.getFloat(diffuseInfo, "g", true);
+	this.diffuseInfo["b"] = this.reader.getFloat(diffuseInfo, "b", true);
+	this.diffuseInfo["a"] = this.reader.getFloat(diffuseInfo, "a", true);
+
+	console.log("\t\t\R: " + this.diffuseInfo["r"] + ", G: " + this.diffuseInfo["g"] + ", B: " + this.diffuseInfo["g"] + ", A: " + this.diffuseInfo["a"] + "\n");
+	
+	//specular
+	var specular = lightInfo.getElementsByTagName("specular");
+	if(specular == null) return "specular not found!";
+
+	console.log("specular: ");
+
+	var specularInfo = specular[0];
+	this.specularInfo = [];
+	this.specularInfo["r"] = this.reader.getFloat(specularInfo, "r", true);
+	this.specularInfo["g"] = this.reader.getFloat(specularInfo, "g", true);
+	this.specularInfo["b"] = this.reader.getFloat(specularInfo, "b", true);
+	this.specularInfo["a"] = this.reader.getFloat(specularInfo, "a", true);
+
+	//emission
+	var emission = lightInfo.getElementsByTagName("emission");
+	if(emission == null) return "emission not found!";
+
+	console.log("emission: ");
+
+	var emissionInfo = emission[0];
+	this.emissionInfo = [];
+	this.emissionInfo["r"] = this.reader.getFloat(emissionInfo, "r", true);
+	this.emissionInfo["g"] = this.reader.getFloat(emissionInfo, "g", true);
+	this.emissionInfo["b"] = this.reader.getFloat(emissionInfo, "b", true);
+	this.emissionInfo["a"] = this.reader.getFloat(emissionInfo, "a", true);
+
+	console.log("\t\t\R: " + this.emissionInfo["r"] + ", G: " + this.emissionInfo["g"] + ", B: " + this.emissionInfo["g"] + ", A: " + this.emissionInfo["a"] + "\n");
+	}
+}
 //Parser LEAVES
 MySceneGraph.prototype.parseLeaves= function(rootElement) {}
 
