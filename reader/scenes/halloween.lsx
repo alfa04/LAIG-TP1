@@ -33,8 +33,8 @@
     </LIGHT>
 
     <LIGHT id="S_light3">                                    <!-- light identifier -->
-        <enable value ="true" />                         <!-- enable/disable -->
-        <position x="4.5" y="8.0" z="9.0" w="0.0 />       <!-- light position -->
+        <enable value ="true" />                            <!-- enable/disable -->
+        <position x="4.5" y="8.0" z="9.0" w="0.0" />         <!-- light position -->
         <ambient r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- ambient component -->
         <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />        <!-- diffuse component -->
         <specular r="0.9" g="0.9" b="0.9" a="1.0" />       <!-- specular component -->
@@ -94,7 +94,7 @@
         <specular r="0.8" g="0.8" b="0.8" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.3" g="0.3" b="0.3" a="1.0" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g=".1" b=".1" a=".1" />        <!-- emission component -->
     </MATERIAL>
 
     <MATERIAL id="head">                                  
@@ -102,7 +102,7 @@
         <specular r="0.8" g="0.8" b="0.8" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.7" g="0.7" b="0.7" a="0.7" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g=".1" b=".1" a=".1" />        <!-- emission component -->
     </MATERIAL>
 
     <MATERIAL id="wallR">                                  
@@ -110,7 +110,7 @@
         <specular r="0.8" g="0.8" b="0.8" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.7" g="0.7" b="0.7" a="0.7" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g=".1" b=".1" a=".1" />        <!-- emission component -->
     </MATERIAL>
 
     <MATERIAL id="wallL">                                  
@@ -118,7 +118,7 @@
         <specular r="0.8" g="0.8" b="0.8" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.7" g="0.7" b="0.7" a="0.7" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g=".1" b=".1" a=".1" />        <!-- emission component -->
     </MATERIAL>
 
     <MATERIAL id="hat">                                  
@@ -126,7 +126,7 @@
         <specular r="0.8" g="0.8" b="0.8" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.7" g="0.7" b="0.7" a="0.7" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g="1." b="1." a="1." />        <!-- emission component -->
     </MATERIAL>
 
     <MATERIAL id="floor">                                  
@@ -134,7 +134,7 @@
         <specular r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.2" g="0.2" b="0.2" a="0.2" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g="0.1" b=".1" a=".1" />        <!-- emission component -->
     </MATERIAL>
 
     <MATERIAL id="black">                                  
@@ -142,7 +142,7 @@
         <specular r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.2" g="0.2" b="0.2" a="0.2" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g=".1" b=".1" a=".1" />        <!-- emission component -->
     </MATERIAL>
 
     <MATERIAL id="knife">                                  
@@ -150,7 +150,7 @@
        	<specular r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.2" g="0.2" b="0.2" a="0.2" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <emission r=".1" g=".1" b=".1" a=".1" />        <!-- emission component -->
     </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
