@@ -192,13 +192,14 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 	var textures = rootElement.getElementsByTagName('TEXTURES');
 	if(textures == null) return "TEXTURES tag not found!";
 
-
 	var texturesInfo = textures[0];
 
 	var texture = texturesInfo.getElementsByTagName('TEXTURE');
 	if(texture == null) return "TEXTURE tag not found!";
 
-	var textureInfo = texture[0];
+	for(var i = 0; i < texture.length; i++){
+
+	var textureInfo = texture[i];
 
 	this.textureInfo = [];
 	this.textureInfo["id"] = this.reader.getString(textureInfo, "id", true);
@@ -224,8 +225,9 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 	this.ampliFactorInfo["s"] = this.reader.getFloat(ampliFactorInfo, "s", true);
 	this.ampliFactorInfo["t"] = this.reader.getFloat(ampliFactorInfo, "t", true);
 
-	console.log("\tamplif_factor s: " + this.ampliFactorInfo["s"] + ", t: " + this.ampliFactorInfo["t"] + "\n");
+	console.log("\tamplif_factor s: " + this.ampliFactorInfo["s"] + ", t: " + this.ampliFactorInfo["t"] + "\n\n");
 
+	}
 
 }
 
