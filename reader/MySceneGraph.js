@@ -48,6 +48,13 @@ MySceneGraph.prototype.onXMLReady=function()
 		return;
 	}	
 
+	var error = this.parseLeaves(rootElement);
+
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+
 	this.loadedOk=true;
 	
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
@@ -259,7 +266,55 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 //Parser MATERIALS
 MySceneGraph.prototype.parseMaterials= function(rootElement) {}
 //Parser LEAVES
-MySceneGraph.prototype.parseLeaves= function(rootElement) {}
+MySceneGraph.prototype.parseLeaves= function(rootElement) {
+
+	console.log("LEAVES: \n");
+
+	var leaves = rootElement.getElementsByTagName('LEAVES');
+	if(leaves == null) return "LEAVES tag not found!";
+
+	var leavesInfo = leaves[0];
+
+	var leaf = leavesInfo.getElementsByTagName('LEAF');
+	if(leaf == null) return "LEAF tag not found!";
+
+	for(var i = 0; i < leaf.length; i++){
+
+	var leafInfo = leaf[i];
+
+	this.leafInfo = [];
+	this.leafInfo["id"] = this.reader.getString(leafInfo, "id", true);
+	this.leafInfo["type"] = this.reader.getString(leafInfo, "type", true);
+
+	if(this.leafInfo["type"] == "rectangle"){
+		this.leafInfo["args"] = this.reader.getRGBA(leafInfo, "args");
+
+	}
+
+	else if(this.leafInfo["type"] == "cylinder"){
+		this.leafInfo["args"] = this.reader.getString(leafInfo, "args", true);
+		this.leafInfo["args"] = this.leafInfo["args"].split(" "); 
+	}
+
+	else if(this.leafInfo["type"] == "sphere"){
+		this.leafInfo["args"] = this.reader.getString(leafInfo, "args", true);
+		this.leafInfo["args"] = this.leafInfo["args"].split(" "); 
+
+	}
+
+	else if(this.leafInfo["type"] == "triangle"){
+		this.leafInfo["args"] = this.reader.getString(leafInfo, "args", true);
+		this.leafInfo["args"] = this.leafInfo["args"].split("  "); 
+		console.log("\tLEAF id: " + this.leafInfo["id"] + ", type: " + this.leafInfo["type"] + ", args: " + this.leafInfo["args"][0] + ", " + this.leafInfo["args"][1] + ", " + this.leafInfo["args"][2] + "\n");
+
+	}
+
+	if(this.leafInfo["type"] != "triangle")
+		console.log("\tLEAF id: " + this.leafInfo["id"] + ", type: " + this.leafInfo["type"] + ", args: " + this.leafInfo["args"] + "\n");
+
+	}
+
+}
 
 
 
