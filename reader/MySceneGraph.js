@@ -34,6 +34,20 @@ MySceneGraph.prototype.onXMLReady=function()
 		return;
 	}	
 
+	var error = this.parseIllumination(rootElement);
+
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+
+	var error = this.parseTextures(rootElement);
+
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+
 	this.loadedOk=true;
 	
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
@@ -131,20 +145,20 @@ MySceneGraph.prototype.parseInitials= function(rootElement) {
 
 }
 
-MySceneGraph.prototype.parseIlumination= function(rootElement) {
+MySceneGraph.prototype.parseIllumination= function(rootElement) {
 
-	console.log("ILUMINATION: \n");
+	console.log("ILLUMINATION: \n");
 
-	var ilumination = rootElement.getElementsByTagName('ILLUMINATION');
-	if(ilumination == null) return "ILLUMINATION tag not found!";
+	var illumination = rootElement.getElementsByTagName('ILLUMINATION');
+	if(illumination == null) return "ILLUMINATION tag not found!";
 
 
-	var iluminationInfo = ilumination[0];
+	var illuminationInfo = illumination[0];
 
-	var ambient = iluminationInfo.getElementsByTagName("ambient");
+	var ambient = illuminationInfo.getElementsByTagName("ambient");
 	if(ambient == null) return "AMBIENT not found!";
 
-	console.log("AMBIENT: ");
+	console.log("\tAMBIENT: ");
 
 	var ambientInfo = ambient[0];
 	this.ambientInfo = [];
@@ -153,12 +167,12 @@ MySceneGraph.prototype.parseIlumination= function(rootElement) {
 	this.ambientInfo["b"] = this.reader.getFloat(ambientInfo, "b", true);
 	this.ambientInfo["a"] = this.reader.getFloat(ambientInfo, "a", true);
 
-	console.log("R: " + this.ambientInfo["r"] + "G: " + this.ambientInfo["g"] + "B: " + this.ambientInfo["g"] + "A: " + this.ambientInfo["a"] + "\n");
+	console.log("\t\tR: " + this.ambientInfo["r"] + ", G: " + this.ambientInfo["g"] + ", B: " + this.ambientInfo["g"] + ", A: " + this.ambientInfo["a"] + "\n");
 
-	var background = iluminationInfo.getElementsByTagName("background");
+	var background = illuminationInfo.getElementsByTagName("background");
 	if(background == null) return "BACKGROUND not found!";
 
-	console.log("BACKGROUND: ");
+	console.log("\tBACKGROUND: ");
 
 	var backgroundInfo = background[0];
 	this.backgroundInfo = [];
@@ -167,8 +181,52 @@ MySceneGraph.prototype.parseIlumination= function(rootElement) {
 	this.backgroundInfo["b"] = this.reader.getFloat(backgroundInfo, "b", true);
 	this.backgroundInfo["a"] = this.reader.getFloat(backgroundInfo, "a", true);
 
-	console.log("R: " + this.backgroundInfo["r"] + "G: " + this.backgroundInfo["g"] + "B: " + this.backgroundInfo["g"] + "A: " + this.backgroundInfo["a"] + "\n");
+	console.log("\t\t\R: " + this.backgroundInfo["r"] + ", G: " + this.backgroundInfo["g"] + ", B: " + this.backgroundInfo["g"] + ", A: " + this.backgroundInfo["a"] + "\n");
 	
+}
+
+MySceneGraph.prototype.parseTextures= function(rootElement) {
+
+	console.log("TEXTURES: \n");
+
+	var textures = rootElement.getElementsByTagName('TEXTURES');
+	if(textures == null) return "TEXTURES tag not found!";
+
+
+	var texturesInfo = textures[0];
+
+	var texture = texturesInfo.getElementsByTagName('TEXTURE');
+	if(texture == null) return "TEXTURE tag not found!";
+
+	var textureInfo = texture[0];
+
+	this.textureInfo = [];
+	this.textureInfo["id"] = this.reader.getString(textureInfo, "id", true);
+
+	console.log("\tTEXTURE id: " + this.textureInfo["id"] + "\n");
+
+	var file = textureInfo.getElementsByTagName('file');
+	if(file == null) return "file tag not found!";
+
+	var fileInfo = file[0];
+
+	this.fileInfo = [];
+	this.fileInfo["path"] = this.reader.getString(fileInfo, "path", true);
+
+	console.log("\tfile path: " + this.fileInfo["path"] + "\n");
+
+	var ampliFactor = textureInfo.getElementsByTagName('amplif_factor');
+	if(ampliFactor == null) return "amplif_factor tag not found!";
+
+	var ampliFactorInfo = ampliFactor[0];
+
+	this.ampliFactorInfo = [];
+	this.ampliFactorInfo["s"] = this.reader.getFloat(ampliFactorInfo, "s", true);
+	this.ampliFactorInfo["t"] = this.reader.getFloat(ampliFactorInfo, "t", true);
+
+	console.log("\tamplif_factor s: " + this.ampliFactorInfo["s"] + ", t: " + this.ampliFactorInfo["t"] + "\n");
+
+
 }
 
 
