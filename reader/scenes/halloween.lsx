@@ -2,7 +2,7 @@
 
 <INITIALS>
     <frustum near="0.1" far="500"/>          
-    <translation x="-1" y="1" z="0" />               
+    <translation x="0" y="0" z="0" />               
     <rotation axis="x" angle="0" />                
     <rotation axis="y" angle="0" />                
     <rotation axis="z" angle="0" />                
@@ -147,7 +147,7 @@
 
     <MATERIAL id="knife">                                  
         <shininess value="20.0" />
-       	<specular r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- specular reflection -->
+        <specular r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- specular reflection -->
         <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />         <!-- diffuse reflection -->
         <ambient r="0.2" g="0.2" b="0.2" a="0.2" />         <!-- ambient reflection -->
         <emission r=".1" g=".1" b=".1" a=".1" />        <!-- emission component -->
