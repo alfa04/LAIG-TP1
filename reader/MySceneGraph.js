@@ -185,6 +185,31 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
 	
 }
 
+//Parser LIGTHS
+MySceneGraph.prototype.parseLights= function(rootElement) {
+
+	var lights = rootElement.getElementsByTagName("LIGHTS");
+	if(lights == null) return "'LIGHTS' tag is missing.";
+	if(lights.length != 1) return "More than one 'LIGHTS' tag.";
+
+	var allLights = lights[0];
+
+	var light = allLights.getElementsByTagName("LIGHT");
+	if(light == null) return "'LIGHT' tag is missing.";
+
+	for(var i=0; i<light.length; i++) {
+		var currLight = [];
+	var id="";
+		//IDs
+		this.light[i].id = this.reader.getString(light[i],"id",true);
+		console.log(this.light.id );
+
+	}
+
+
+
+}
+
 MySceneGraph.prototype.parseTextures= function(rootElement) {
 
 	console.log("TEXTURES: \n");
