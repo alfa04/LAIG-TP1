@@ -68,6 +68,13 @@ MySceneGraph.prototype.onXMLReady=function()
 		return;
 	}	
 
+	var error = this.parseNodes(rootElement);
+
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+
 	this.loadedOk=true;
 	
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
@@ -500,7 +507,36 @@ MySceneGraph.prototype.parseLeaves= function(rootElement) {
 
 }
 
+//Parser Nodes
+MySceneGraph.prototype.parseNodes= function(rootElement) {
 
+	console.log("NODES: \n");
+
+	var nodes = rootElement.getElementsByTagName('NODES');
+	if(nodes == null) return "NODES tag not found!";	
+
+	var nodesInfo = nodes[0];
+
+	var root = nodesInfo.getElementsByTagName('ROOT');
+	if(root == null) return "ROOT tag not found!";	
+
+	var rootInfo = root[0];
+
+	this.rootInfo = [];
+	this.rootInfo["id"] = this.reader.getString(rootInfo, "id", true);
+	console.log("\tROOT id: " + this.rootInfo["id"] + "\n");
+	
+	var node = nodesInfo.getElementsByTagName('NODE');
+	if(node == null) return "NODE tag not found!";	
+
+	var nodeInfo = node[0];
+
+	this.nodeInfo = [];
+	this.nodeInfo["id"] = this.reader.getString(nodeInfo, "id", true);
+	console.log("\tNODE id: " + this.nodeInfo["id"] + "\n");
+
+
+}
 
 
 /*
