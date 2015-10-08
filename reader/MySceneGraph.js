@@ -237,7 +237,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	var enableInfo = enable[0];
 
 	this.enableInfo = [];
-	this.enableInfo["value"] =  this.reader.getItem(enableInfo, 'value', [1,0]);
+	this.enableInfo["value"] =  this.reader.getItem(enableInfo, 'value', ['1','0']);
 
 	console.log("\tenable value: " + this.enableInfo["value"] + "\n");
 	
