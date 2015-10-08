@@ -256,6 +256,13 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 
 }
 
+//Parser MATERIALS
+MySceneGraph.prototype.parseMaterials= function(rootElement) {}
+//Parser LEAVES
+MySceneGraph.prototype.parseLeaves= function(rootElement) {}
+
+
+
 
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
