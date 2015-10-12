@@ -529,12 +529,91 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 	var node = nodesInfo.getElementsByTagName('NODE');
 	if(node == null) return "NODE tag not found!";	
 
-	var nodeInfo = node[0];
+	for(var i = 0; i < node.length; i++){
 
-	this.nodeInfo = [];
-	this.nodeInfo["id"] = this.reader.getString(nodeInfo, "id", true);
-	console.log("\tNODE id: " + this.nodeInfo["id"] + "\n");
+		var nodeInfo = node[i];
 
+		this.nodeInfo = [];
+		this.nodeInfo["id"] = this.reader.getString(nodeInfo, "id", true);
+		console.log("\tNODE id: " + this.nodeInfo["id"] + "\n");
+
+		var material = nodeInfo.getElementsByTagName('MATERIAL');
+		if(material == null) return "MATERIAL tag not found!";	
+
+		var materialInfo = material[0];
+
+		this.materialInfo = [];
+		this.materialInfo["id"] = this.reader.getString(materialInfo, "id", true);
+		console.log("\t\tMATERIAL id: " + this.materialInfo["id"] + "\n");
+
+		var texture = nodeInfo.getElementsByTagName('TEXTURE');
+		if(texture == null) return "TEXTURE tag not found!";	
+
+		var textureInfo = texture[0];
+
+		this.textureInfo = [];
+		this.textureInfo["id"] = this.reader.getString(textureInfo, "id", true);
+		console.log("\t\tTEXTURE id: " + this.textureInfo["id"] + "\n");
+
+		var transformations = [];
+
+		var transformationsNodesLength = nodeInfo.children.length-1; 
+
+		var j = 2;
+
+		for( ; j<transformationsNodesLength; j++){
+			if(nodeInfo.children[j].tagName == 'ROTATION'){
+				var rotationInfo = nodeInfo.children[j];
+				this.rotationInfo = [];
+				this.rotationInfo["axis"] = this.reader.getString(rotationInfo, "axis", true);
+				this.rotationInfo["angle"] = this.reader.getFloat(rotationInfo, "angle", true);
+				console.log("\t\tROTATION axis: " + this.rotationInfo["axis"] + ", angle: " + this.rotationInfo["angle"] + "\n");
+				transformations.push(rotationInfo);
+			}
+
+			if(nodeInfo.children[j].tagName == 'TRANSLATION'){
+				var translationInfo = nodeInfo.children[j];
+				this.translationInfo = [];
+				this.translationInfo["x"] = this.reader.getFloat(translationInfo, "x", true);
+				this.translationInfo["y"] = this.reader.getFloat(translationInfo, "y", true);
+				this.translationInfo["z"] = this.reader.getFloat(translationInfo, "z", true);
+				console.log("\t\tTRANSLATION x: " + this.translationInfo["x"] + ", y: " + this.translationInfo["y"] + ", z: " + this.translationInfo["z"] + "\n");
+				transformations.push(translationInfo);
+			}
+
+			if(nodeInfo.children[j].tagName == 'SCALE'){
+				var scaleInfo = nodeInfo.children[j];
+				this.scaleInfo = [];
+				this.scaleInfo["sx"] = this.reader.getFloat(scaleInfo, "sx", true);
+				this.scaleInfo["sy"] = this.reader.getFloat(scaleInfo, "sy", true);
+				this.scaleInfo["sz"] = this.reader.getFloat(scaleInfo, "sz", true);
+				console.log("\t\tSCALE sx: " + this.scaleInfo["sx"] + ", sy: " + this.scaleInfo["sy"] + ", sz: " + this.scaleInfo["sz"] + "\n");
+				transformations.push(scaleInfo);
+			}
+
+		}
+
+		var descendants = nodeInfo.getElementsByTagName('DESCENDANTS');
+		if(descendants == null) return "DESCENDANTS tag not found!";	
+
+		var descendantsInfo = descendants[0];
+
+		console.log("\t\tDESCENDANTS");
+
+		var descendant = descendantsInfo.getElementsByTagName('DESCENDANT');
+		if(descendant == null) return "DESCENDANTS tag not found!";	
+
+		for(var k = 0; k < descendant.length; k++){
+
+			var descendantInfo = descendant[k];
+
+			this.descendantInfo = [];
+			this.descendantInfo["id"] = this.reader.getString(descendantInfo, "id", true);
+			console.log("\t\t\tDESCENDANT id: " + this.descendantInfo["id"] + "\n");
+
+		}
+
+	}
 
 }
 
