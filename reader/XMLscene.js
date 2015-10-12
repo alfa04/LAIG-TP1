@@ -13,7 +13,8 @@ XMLscene.prototype.init = function (application) {
 
     this.initLights();
 
-    this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+	this.enableTextures(true);
+    this.gl.clearColor(1, 0.0, 0.0, 1.0);
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -21,14 +22,25 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
-};
+
+	this.wall = new Plane(this);
+
+	// Material Wall
+	this.materialWall = new CGFappearance(this);
+	this.materialWall.setAmbient(0.5, 0.5, 0.5, 1);
+	this.materialWall.setDiffuse(0.5, 0.3, 0.5, 1);
+	this.materialWall.setSpecular(0.15, 0.15, 0.15, 1);
+	this.materialWall.setShininess(10);
+	this.materialWall.loadTexture("floor.png");
+	this.materialWall.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+}
 
 XMLscene.prototype.initLights = function () {
 
     this.shader.bind();
 
-	this.lights[0].setPosition(2, 2, 0, 1);
-    this.lights[0].setDiffuse(2,.1,1.0,1.0);
+	this.lights[0].setPosition(2, 2, 5, 1);
+    this.lights[0].setDiffuse(1,1,1.0,1.0);
     
 	this.lights[0].setVisible(true);
     this.lights[0].update();
@@ -84,6 +96,14 @@ XMLscene.prototype.display = function () {
 	{
 		this.lights[0].update();
 	}
+
+	    // Plane Wall
+	this.pushMatrix();
+	this.scale(15, 8, 8);
+	this.materialWall.apply();
+	this.wall.display();
+	this.popMatrix();
+    this.shader.unbind();
     this.shader.unbind();
 };
 
