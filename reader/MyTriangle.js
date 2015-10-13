@@ -17,7 +17,6 @@ MyTriangle.prototype.initBuffers = function() {
     ];
  
     var vec1 = vec3.fromValues(this.x1-this.x2, this.y1-this.y2, this.z1-this.z2);
-    console.log("SSSSSSSSSSSSSSSSSSSSS" + this.x1 + this.x2 + this.x3);
     var vec2 = vec3.fromValues(this.x1-this.x3, this.y1-this.y3, this.z1-this.z3);
     var vecNormal = vec3.create();
     vec3.cross(vecNormal, vec1, vec2);
@@ -30,13 +29,13 @@ MyTriangle.prototype.initBuffers = function() {
         vecNormal[0], vecNormal[1], vecNormal[2],
     ];
  
-    this.tex = [
+    this.texCoords = [
                     0, 0,
                     1, 0,
                     1, 1
         ];
  
-        this.primitiveType = this.scene.gl.TRIANGLES;
+    this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
    
 };

@@ -46,7 +46,7 @@ XMLscene.prototype.init = function (application) {
 	this.materialcylinder.loadTexture("floor.png");
 	this.materialcylinder.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
-	this.triangle = new MyTriangle(this, [3.0,0.0,0.0,0.0,3.0,0.0,0.0,0.0,3.0]);
+	this.triangle = new MyTriangle(this, [0.0,0.0,0.0,3.0,0.0,0.0,3.0,3.0,0.0]);
 
 	// Material Wall
 	this.materialtriangle = new CGFappearance(this);
@@ -131,8 +131,11 @@ XMLscene.prototype.display = function () {
 	this.materialcylinder.apply();
 	this.cylinder.display();
 
+ 	this.pushMatrix();
+	this.translate(0, 0, 1);
 	this.materialtriangle.apply();
 	this.triangle.display();
+	this.popMatrix();
 
     this.shader.unbind();
 };
