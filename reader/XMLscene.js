@@ -33,6 +33,30 @@ XMLscene.prototype.init = function (application) {
 	this.materialWall.setShininess(10);
 	this.materialWall.loadTexture("floor.png");
 	this.materialWall.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+
+
+	this.cylinder = new MyCoveredCylinder(this, 6,6);
+
+	// Material Wall
+	this.materialcylinder = new CGFappearance(this);
+	this.materialcylinder.setAmbient(0.5, 0.5, 0.5, 1);
+	this.materialcylinder.setDiffuse(0.5, 0.3, 0.5, 1);
+	this.materialcylinder.setSpecular(0.15, 0.15, 0.15, 1);
+	this.materialcylinder.setShininess(10);
+	this.materialcylinder.loadTexture("floor.png");
+	this.materialcylinder.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+
+	this.triangle = new MyTriangle(this, [3.0,0.0,0.0,0.0,3.0,0.0,0.0,0.0,3.0]);
+
+	// Material Wall
+	this.materialtriangle = new CGFappearance(this);
+	this.materialtriangle.setAmbient(0.5, 0.5, 0.5, 1);
+	this.materialtriangle.setDiffuse(0.5, 0.3, 0.5, 1);
+	this.materialtriangle.setSpecular(0.15, 0.15, 0.15, 1);
+	this.materialtriangle.setShininess(10);
+	this.materialtriangle.loadTexture("head.png");
+	this.materialtriangle.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+
 }
 
 XMLscene.prototype.initLights = function () {
@@ -99,11 +123,17 @@ XMLscene.prototype.display = function () {
 
 	    // Plane Wall
 	this.pushMatrix();
-	this.scale(15, 8, 8);
+	this.scale(15, 8, 0);
 	this.materialWall.apply();
 	this.wall.display();
 	this.popMatrix();
-    this.shader.unbind();
+
+	this.materialcylinder.apply();
+	this.cylinder.display();
+
+	this.materialtriangle.apply();
+	this.triangle.display();
+
     this.shader.unbind();
 };
 
