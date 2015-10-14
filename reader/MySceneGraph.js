@@ -268,19 +268,19 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	console.log("\t\t\R: " + this.positionInfo["r"] + ", G: " + this.positionInfo["g"] + ", B: " + this.positionInfo["g"] + ", A: " + this.positionInfo["a"] + "\n");
 
 	//ambient
-	var ambient = lightInfo.getElementsByTagName("ambient");
-	if(ambient == null) return "ambient not found!";
+	var ambientLight = lightInfo.getElementsByTagName("ambient");
+	if(ambientLight == null) return "ambient not found!";
 
 	console.log("ambient: ");
 
-	var ambientInfo = ambient[0];
-	this.ambientInfo = [];
-	this.ambientInfo["r"] = this.reader.getFloat(ambientInfo, "r", true);
-	this.ambientInfo["g"] = this.reader.getFloat(ambientInfo, "g", true);
-	this.ambientInfo["b"] = this.reader.getFloat(ambientInfo, "b", true);
-	this.ambientInfo["a"] = this.reader.getFloat(ambientInfo, "a", true);
+	var ambientLightInfo = ambient[0];
+	this.ambientLightInfo = [];
+	this.ambientLightInfo["r"] = this.reader.getFloat(ambientLightInfo, "r", true);
+	this.ambientLightInfo["g"] = this.reader.getFloat(ambientLightInfo, "g", true);
+	this.ambientLightInfo["b"] = this.reader.getFloat(ambientLightInfo, "b", true);
+	this.ambientLightInfo["a"] = this.reader.getFloat(ambientLightInfo, "a", true);
 
-	console.log("\t\t\R: " + this.ambientInfo["r"] + ", G: " + this.ambientInfo["g"] + ", B: " + this.ambientInfo["g"] + ", A: " + this.ambientInfo["a"] + "\n");
+	console.log("\t\t\R: " + this.ambientLightInfo["r"] + ", G: " + this.ambientLightInfo["g"] + ", B: " + this.ambientLightInfo["g"] + ", A: " + this.ambientLightInfo["a"] + "\n");
 	
 	//diffuse
 	var diffuse = lightInfo.getElementsByTagName("diffuse");
