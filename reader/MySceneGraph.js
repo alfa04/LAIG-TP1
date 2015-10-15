@@ -515,6 +515,8 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 
 	console.log("NODES: \n");
 
+	this.nodesList = [];
+
 	var nodes = rootElement.getElementsByTagName('NODES');
 	if(nodes == null) return "NODES tag not found!";	
 
@@ -536,18 +538,16 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 
 		var nodeInfo = node[i];
 
-		this.nodeInfo = [];
-		this.nodeInfo["id"] = this.reader.getString(nodeInfo, "id", true);
-		console.log("\tNODE id: " + this.nodeInfo["id"] + "\n");
+		var myNode = new Node(this.reader.getString(nodeInfo, "id", true));
+		console.log("\tNODE id: " + myNode.id+ "\n");
 
 		var material = nodeInfo.getElementsByTagName('MATERIAL');
 		if(material == null) return "MATERIAL tag not found!";	
 
 		var materialInfo = material[0];
 
-		this.materialInfo = [];
-		this.materialInfo["id"] = this.reader.getString(materialInfo, "id", true);
-		console.log("\t\tMATERIAL id: " + this.materialInfo["id"] + "\n");
+		myNode.material = this.reader.getString(materialInfo, "id", true);
+		console.log("\t\tMATERIAL id: " + myNode.material + "\n");
 
 		var texture = nodeInfo.getElementsByTagName('TEXTURE');
 		if(texture == null) return "TEXTURE tag not found!";	
@@ -555,8 +555,8 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 		var textureInfo = texture[0];
 
 		this.textureInfo = [];
-		this.textureInfo["id"] = this.reader.getString(textureInfo, "id", true);
-		console.log("\t\tTEXTURE id: " + this.textureInfo["id"] + "\n");
+		myNode.texture = this.reader.getString(textureInfo, "id", true);
+		console.log("\t\tTEXTURE id: " + myNode.texture + "\n");
 
 		var transformations = [];
 
@@ -569,8 +569,16 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 				var rotationInfo = nodeInfo.children[j];
 				this.rotationInfo = [];
 				this.rotationInfo["axis"] = this.reader.getString(rotationInfo, "axis", true);
-				this.rotationInfo["angle"] = this.reader.getFloat(rotationInfo, "angle", true);
-				console.log("\t\tROTATION axis: " + this.rotationInfo["axis"] + ", angle: " + this.rotationInfo["angle"] + "\n");
+				this.rotationInfo["angle"] = (this.reader.getFloat(rotationInfo, "angle", true) / 180) * Math.PI;
+				console.log("\t\tROTATION axis: " + this.rotationInfo["axis"] + ", angle(rad): " + this.rotationInfo["angle"] + "\n");
+				var rotMatrix = [];
+				if(this.rotationInfo["axis"] == "x")
+					this.rotMatrix = [1,0,0];
+				else if(this.rotationInfo["axis"] == "y")
+					this.rotMatrix = [0,1,0];
+				else if(this.rotationInfo["axis"] == "z")
+					this.rotMatrix = [0,0,1];
+				mat4.rotate(myNode.matrix, myNode.matrix, this.rotationInfo["angle"], this.rotMatrix);
 				transformations.push(rotationInfo);
 			}
 
@@ -581,6 +589,7 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 				this.translationInfo["y"] = this.reader.getFloat(translationInfo, "y", true);
 				this.translationInfo["z"] = this.reader.getFloat(translationInfo, "z", true);
 				console.log("\t\tTRANSLATION x: " + this.translationInfo["x"] + ", y: " + this.translationInfo["y"] + ", z: " + this.translationInfo["z"] + "\n");
+				mat4.translate(myNode.matrix, myNode.matrix, translationInfo);
 				transformations.push(translationInfo);
 			}
 
@@ -591,6 +600,7 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 				this.scaleInfo["sy"] = this.reader.getFloat(scaleInfo, "sy", true);
 				this.scaleInfo["sz"] = this.reader.getFloat(scaleInfo, "sz", true);
 				console.log("\t\tSCALE sx: " + this.scaleInfo["sx"] + ", sy: " + this.scaleInfo["sy"] + ", sz: " + this.scaleInfo["sz"] + "\n");
+				mat4.scale(myNode.matrix, myNode.matrix, scaleInfo);
 				transformations.push(scaleInfo);
 			}
 
@@ -610,59 +620,16 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 
 			var descendantInfo = descendant[k];
 
-			this.descendantInfo = [];
-			this.descendantInfo["id"] = this.reader.getString(descendantInfo, "id", true);
-			console.log("\t\t\tDESCENDANT id: " + this.descendantInfo["id"] + "\n");
+			
+			myNode.descendants[k] = this.reader.getString(descendantInfo, "id", true);
+			console.log("\t\t\tDESCENDANT id: " + myNode.descendants[k] + "\n");
 
 		}
 
+		this.nodesList.push(myNode);
 	}
 
 }
-
-
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
-MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
-	
-	var elems =  rootElement.getElementsByTagName('globals');
-	if (elems == null) {
-		return "globals element is missing.";
-	}
-
-	if (elems.length != 1) {
-		return "either zero or more than one 'globals' element found.";
-	}
-
-	// various examples of different types of access
-	var globals = elems[0];
-	this.background = this.reader.getRGBA(globals, 'background');
-	this.drawmode = this.reader.getItem(globals, 'drawmode', ["fill","line","point"]);
-	this.cullface = this.reader.getItem(globals, 'cullface', ["back","front","none", "frontandback"]);
-	this.cullorder = this.reader.getItem(globals, 'cullorder', ["ccw","cw"]);
-
-	console.log("Globals read from file: {background=" + this.background + ", drawmode=" + this.drawmode + ", cullface=" + this.cullface + ", cullorder=" + this.cullorder + "}");
-
-	var tempList=rootElement.getElementsByTagName('list');
-
-	if (tempList == null  || tempList.length==0) {
-		return "list element is missing.";
-	}
-	
-	this.list=[];
-	// iterate over every element
-	var nnodes=tempList[0].children.length;
-	for (var i=0; i< nnodes; i++)
-	{
-		var e=tempList[0].children[i];
-
-		// process each element and store its information
-		this.list[e.id]=e.attributes.getNamedItem("coords").value;
-		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	};
-
-};
 	
 /*
  * Callback to be executed on any read error
@@ -704,3 +671,12 @@ function Light(id) {
     	a: 0.0	
     };
 }
+
+function Node(id) {
+    this.id = id;
+    this.material = null;
+    this.texture = null;
+    this.matrix = mat4.create();
+    this.descendants = [];
+}
+

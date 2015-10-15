@@ -191,3 +191,15 @@ XMLscene.prototype.setInitials = function() {
     //scale
     this.scale(this.graph.initialsInfo.scale['sx'], this.graph.initialsInfo.scale['sy'], this.graph.initialsInfo.scale['sz']);
 };
+
+XMLscene.prototype.findRootNode = function() {
+	
+	for(var i = 0; i<this.graph.nodesList.length; i++){
+		if(this.graph.nodesList[i].id == this.rootInfo["id"]){
+			return i;
+		}
+
+	}
+
+};
+
