@@ -77,17 +77,24 @@ XMLscene.prototype.initCameras = function () {
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
-    this.setAmbient(0.2, 0.4, 0.8, 1.0);
-    this.setDiffuse(0.2, 0.4, 0.8, 1.0);
+    /*this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
-    this.setShininess(10.0);	
+    this.setShininess(10.0);	*/
 };
 
 // Handler called when the graph is finally loaded. 
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
-	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+
+	//ILLUMINATION
+
+	//background
+	this.gl.clearColor(this.graph.backgroundInfo['r'],this.graph.backgroundInfo['g'],this.graph.backgroundInfo['b'],this.graph.backgroundInfo['a']);
+	
+	//ambient
+	this.setGlobalAmbientLight(this.graph.ambientInfo['r'],this.graph.ambientInfo['g'],this.graph.ambientInfo['b'],this.graph.ambientInfo['a']); 
+
     this.lights[0].enable();
 };
 
