@@ -14,7 +14,7 @@ XMLscene.prototype.init = function (application) {
     this.initLights();
 
 	this.enableTextures(true);
-    this.gl.clearColor(1, 0.0, 0.0, 1.0);
+    //this.gl.clearColor(1, 0.0, 0.0, 1.0);
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -35,7 +35,7 @@ XMLscene.prototype.init = function (application) {
 	this.materialWall.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
 
-	this.cylinder = new MyCoveredCylinder(this, 6,6);
+	this.cylinder = new MyCoveredCylinder(this,6,6);
 
 	// Material Wall
 	this.materialcylinder = new CGFappearance(this);
@@ -85,7 +85,14 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // Handler called when the graph is finally loaded. 
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
-{
+{	//INITIALS
+		//frustum
+	this.camera.near = this.graph.initialsInfo.frustum['near'];
+    this.camera.far =  this.graph.initialsInfo.frustum['far'];
+    	//axis reference
+ 
+	this.axis = new CGFaxis(this,this.graph.initialsInfo.reference['length']);
+
 
 	//ILLUMINATION
 
@@ -113,10 +120,7 @@ XMLscene.prototype.display = function () {
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
-	// Draw axis
-	this.axis.display();
 
-	this.setDefaultAppearance();
 	
 	// ---- END Background, camera and axis setup
 
@@ -125,6 +129,16 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
+
+		// Draw axis
+		this.axis.display();
+	
+
+		this.setDefaultAppearance();
+
+        // setInitials transformations
+        this.setInitials();
+
 		this.lights[0].update();
 	}
 
@@ -147,3 +161,20 @@ XMLscene.prototype.display = function () {
     this.shader.unbind();
 };
 
+XMLscene.prototype.setInitials = function() {
+	var deg2rad = Math.PI / 180;
+	
+	//tranlate
+    this.translate(this.graph.initialsInfo.translation['x'], this.graph.initialsInfo.translation['y'],this.graph.initialsInfo.translation['z']);
+    
+    //rotations
+    //x
+    this.rotate(this.graph.initialsInfo.rotation['x'] * deg2rad, 1, 0, 0);
+    //y          
+    this.rotate(this.graph.initialsInfo.rotation['y'] * deg2rad, 0, 1, 0);
+    //z        
+    this.rotate(this.graph.initialsInfo.rotation['z'] * deg2rad, 0, 0, 1);
+                
+    //scale
+    this.scale(this.graph.initialsInfo.scale['sx'], this.graph.initialsInfo.scale['sy'], this.graph.initialsInfo.scale['sz']);
+};

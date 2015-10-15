@@ -273,7 +273,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 
 	console.log("ambient: ");
 
-	var ambientLightInfo = ambient[0];
+	var ambientLightInfo = ambientLight[0];
 	this.ambientLightInfo = [];
 	this.ambientLightInfo["r"] = this.reader.getFloat(ambientLightInfo, "r", true);
 	this.ambientLightInfo["g"] = this.reader.getFloat(ambientLightInfo, "g", true);
