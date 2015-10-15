@@ -9,6 +9,10 @@ function MySceneGraph(filename, scene) {
 	// File reading 
 	this.reader = new CGFXMLreader();
 
+
+
+    this.leaveslist = [];
+
 	/*
 	 * Read the contents of the xml file, and refer to this class for loading and error handlers.
 	 * After the file is read, the reader calls onXMLReady on this object.
@@ -474,39 +478,38 @@ MySceneGraph.prototype.parseLeaves= function(rootElement) {
 
 	for(var i = 0; i < leaf.length; i++){
 
-	var leafInfo = leaf[i];
+	var leafInfo = new Leaf (leaf[i].getAttribute('id'));
 
-	this.leafInfo = [];
-	this.leafInfo["id"] = this.reader.getString(leafInfo, "id", true);
-	this.leafInfo["type"] = this.reader.getString(leafInfo, "type", true);
+	leafInfo.type= this.reader.getItem(leaf[i], "type", ['rectangle', 'cylinder', 'sphere', 'triangle']);
 
-	if(this.leafInfo["type"] == "rectangle"){
-		this.leafInfo["args"] = this.reader.getRGBA(leafInfo, "args");
+	if(leafInfo.type == "rectangle"){
+		leafInfo.args.push(this.reader.getRGBA(leaf[i], "args"));
+		console.log(leafInfo.args);
+	}
+	else if(leafInfo.type == "cylinder"){
+		var aux = this.reader.getString(leaf[i], "args", true);
+		leafInfo.args.push(aux.split(" "));
+		console.log(leafInfo.args); 
+	}
+
+	else if(leafInfo.type == "sphere"){
+		var aux = this.reader.getString(leaf[i], "args", true);
+		leafInfo.args.push(aux.split(" "));
+		console.log(leafInfo.args); 
+	}
+
+	else if(leafInfo.type == "triangle"){
+		var aux = this.reader.getString(leaf[i], "args", true);
+		leafInfo.args.push(aux.split("  "));
+		console.log(leafInfo.args); 
+	}
+
+	this.leaveslist.push(leafInfo);
+	//if(leafInfo.type != "triangle")
+		//console.log("\tLEAF id: " + this.leafInfo["id"] + ", type: " + this.leafInfo["type"] + ", args: " + this.leafInfo["args"] + "\n");
 
 	}
 
-	else if(this.leafInfo["type"] == "cylinder"){
-		this.leafInfo["args"] = this.reader.getString(leafInfo, "args", true);
-		this.leafInfo["args"] = this.leafInfo["args"].split(" "); 
-	}
-
-	else if(this.leafInfo["type"] == "sphere"){
-		this.leafInfo["args"] = this.reader.getString(leafInfo, "args", true);
-		this.leafInfo["args"] = this.leafInfo["args"].split(" "); 
-
-	}
-
-	else if(this.leafInfo["type"] == "triangle"){
-		this.leafInfo["args"] = this.reader.getString(leafInfo, "args", true);
-		this.leafInfo["args"] = this.leafInfo["args"].split("  "); 
-		console.log("\tLEAF id: " + this.leafInfo["id"] + ", type: " + this.leafInfo["type"] + ", args: " + this.leafInfo["args"][0] + ", " + this.leafInfo["args"][1] + ", " + this.leafInfo["args"][2] + "\n");
-
-	}
-
-	if(this.leafInfo["type"] != "triangle")
-		console.log("\tLEAF id: " + this.leafInfo["id"] + ", type: " + this.leafInfo["type"] + ", args: " + this.leafInfo["args"] + "\n");
-
-	}
 
 }
 
@@ -680,3 +683,8 @@ function Node(id) {
     this.descendants = [];
 }
 
+function Leaf(id) {
+    this.id = id;
+    this.type = "";
+    this.args = [];
+}

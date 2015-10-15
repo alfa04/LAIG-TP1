@@ -113,7 +113,11 @@ XMLscene.prototype.onGraphLoaded = function ()
 	//ambient
 	this.setGlobalAmbientLight(this.graph.ambientInfo['r'],this.graph.ambientInfo['g'],this.graph.ambientInfo['b'],this.graph.ambientInfo['a']); 
 
+	//LIGHTS
     this.initLights();
+
+    //LEAVES
+    this.setLeaves();
 };
 
 XMLscene.prototype.display = function () {
@@ -203,3 +207,10 @@ XMLscene.prototype.findRootNode = function() {
 
 };
 
+XMLscene.prototype.setLeaves = function() {
+	//console.log("yyyyyyyyyyyyyyyyyyyyyyyyyy" + this.graph.leaveslist[0]);
+	for (var i = 0; i < this.graph.leaveslist.length; i++) {
+		var leaf = this.graph.leaveslist[i].args;
+		//console.log("yyyyyyyyyyyyyyyyyyyyyyyyyy" + leaf);
+	}
+}
