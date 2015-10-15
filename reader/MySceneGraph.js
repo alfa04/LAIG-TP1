@@ -219,6 +219,7 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
 //Parser LIGTHS
 MySceneGraph.prototype.parseLights= function(rootElement) {
 
+
 	console.log("LIGHTS: \n");
 
 	this.lightsList = [];
@@ -312,6 +313,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	this.lightsList.push(myLight);
 
 	}
+
 
 }
 
@@ -670,7 +672,6 @@ MySceneGraph.prototype.onXMLError=function (message) {
 	console.error("XML Loading Error: "+message);	
 	this.loadedOk=false;
 };
-
 
 function Light(id) {
     this.id = id;

@@ -80,6 +80,7 @@ XMLscene.prototype.initLights = function () {
 	}
 
     this.shader.unbind();
+    this.shader.unbind();
 };
 
 XMLscene.prototype.initCameras = function () {
@@ -95,7 +96,6 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // Handler called when the graph is finally loaded. 
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
-
 {	//INITIALS
 		//frustum
 	this.camera.near = this.graph.initialsInfo.frustum['near'];
@@ -106,13 +106,14 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 
 	//ILLUMINATION
+
 	//background
 	this.gl.clearColor(this.graph.backgroundInfo['r'],this.graph.backgroundInfo['g'],this.graph.backgroundInfo['b'],this.graph.backgroundInfo['a']);
 	
 	//ambient
 	this.setGlobalAmbientLight(this.graph.ambientInfo['r'],this.graph.ambientInfo['g'],this.graph.ambientInfo['b'],this.graph.ambientInfo['a']); 
 
-	this.initLights();
+    this.initLights();
 };
 
 XMLscene.prototype.display = function () {
@@ -137,7 +138,6 @@ XMLscene.prototype.display = function () {
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
-
 	if (this.graph.loadedOk)
 	{
 
@@ -150,7 +150,7 @@ XMLscene.prototype.display = function () {
         // setInitials transformations
         this.setInitials();
 
-		//Lights
+				//Lights
         for (var i = 0; i < this.graph.lightsList.length; i++)
             this.lights[i].update();
 	}
@@ -176,7 +176,7 @@ XMLscene.prototype.display = function () {
 
 XMLscene.prototype.setInitials = function() {
 	var deg2rad = Math.PI / 180;
-	
+
 	//tranlate
     this.translate(this.graph.initialsInfo.translation['x'], this.graph.initialsInfo.translation['y'],this.graph.initialsInfo.translation['z']);
     
