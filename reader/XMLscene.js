@@ -12,7 +12,7 @@ XMLscene.prototype.init = function (application) {
     this.initCameras();
 
 	this.enableTextures(true);
-    this.gl.clearColor(1, 0.0, 0.0, 1.0);
+    //this.gl.clearColor(1, 0.0, 0.0, 1.0);
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -33,7 +33,7 @@ XMLscene.prototype.init = function (application) {
 	this.materialWall.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
 
-	this.cylinder = new MyCoveredCylinder(this, 6,6);
+	this.cylinder = new MyCoveredCylinder(this,6,6);
 
 	// Material Wall
 	this.materialcylinder = new CGFappearance(this);
@@ -95,7 +95,16 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // Handler called when the graph is finally loaded. 
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
-{
+
+{	//INITIALS
+		//frustum
+	this.camera.near = this.graph.initialsInfo.frustum['near'];
+    this.camera.far =  this.graph.initialsInfo.frustum['far'];
+    	//axis reference
+ 
+	this.axis = new CGFaxis(this,this.graph.initialsInfo.reference['length']);
+
+
 	//ILLUMINATION
 	//background
 	this.gl.clearColor(this.graph.backgroundInfo['r'],this.graph.backgroundInfo['g'],this.graph.backgroundInfo['b'],this.graph.backgroundInfo['a']);
@@ -121,23 +130,30 @@ XMLscene.prototype.display = function () {
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
-	// Draw axis
-	this.axis.display();
 
-	this.setDefaultAppearance();
 	
 	// ---- END Background, camera and axis setup
 
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
+
+	if (this.graph.loadedOk)
+	{
+
+		// Draw axis
+		this.axis.display();
 	
 
-	if (this.graph.loadedOK) {
-        //Lights
+		this.setDefaultAppearance();
+
+        // setInitials transformations
+        this.setInitials();
+
+		//Lights
         for (var i = 0; i < this.graph.lightsList.length; i++)
             this.lights[i].update();
-    }
+	}
 
 	    // Plane Wall
 	this.pushMatrix();
@@ -158,3 +174,20 @@ XMLscene.prototype.display = function () {
     this.shader.unbind();
 };
 
+XMLscene.prototype.setInitials = function() {
+	var deg2rad = Math.PI / 180;
+	
+	//tranlate
+    this.translate(this.graph.initialsInfo.translation['x'], this.graph.initialsInfo.translation['y'],this.graph.initialsInfo.translation['z']);
+    
+    //rotations
+    //x
+    this.rotate(this.graph.initialsInfo.rotation['x'] * deg2rad, 1, 0, 0);
+    //y          
+    this.rotate(this.graph.initialsInfo.rotation['y'] * deg2rad, 0, 1, 0);
+    //z        
+    this.rotate(this.graph.initialsInfo.rotation['z'] * deg2rad, 0, 0, 1);
+                
+    //scale
+    this.scale(this.graph.initialsInfo.scale['sx'], this.graph.initialsInfo.scale['sy'], this.graph.initialsInfo.scale['sz']);
+};
