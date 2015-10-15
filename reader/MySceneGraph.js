@@ -221,6 +221,8 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 
 	console.log("LIGHTS: \n");
 
+	this.lightsList = [];
+
 	var lights = rootElement.getElementsByTagName('LIGHTS');
 	if(lights == null) return "LIGHTS tag not found!";
 
@@ -231,14 +233,11 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 
 	for(var i = 0; i < light.length; i++){
 
-	
 	var lightInfo = light[i];
 
-	this.lightInfo = [];
-	this.lightInfo["id"] = this.reader.getString(lightInfo, "id", true);
-	var light = new Light(this.lightInfo["id"]);
+	var myLight = new Light(this.reader.getString(lightInfo, "id", true));
 
-	console.log("\tLIGHT id: " + this.lightInfo["id"] + "\n");
+	console.log("\tLIGHT id: " + myLight.id + "\n");
 	
 	//enable
 	var enable = lightInfo.getElementsByTagName('enable');
@@ -246,10 +245,9 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 
 	var enableInfo = enable[0];
 
-	this.enableInfo = [];
-	this.enableInfo["value"] =  this.reader.getItem(enableInfo, 'value', ['1','0']);
+	myLight.enabled = this.reader.getItem(enableInfo, 'value', ['1','0']);
 
-	console.log("\tenable value: " + this.enableInfo["value"] + "\n");
+	console.log("\tenable value: " + myLight.enabled + "\n");
 	
 	//position
 	var position = lightInfo.getElementsByTagName("position");
@@ -258,13 +256,13 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	console.log("position: ");
 
 	var positionInfo = position[0];
-	this.positionInfo = [];
-	this.positionInfo["x"] = this.reader.getFloat(positionInfo, "x", true);
-	this.positionInfo["y"] = this.reader.getFloat(positionInfo, "y", true);
-	this.positionInfo["z"] = this.reader.getFloat(positionInfo, "z", true);
-	this.positionInfo["w"] = this.reader.getFloat(positionInfo, "w", true);
 
-	console.log("\t\t\X: " + this.positionInfo["x"] + ", Y: " + this.positionInfo["y"] + ", Z: " + this.positionInfo["z"] + ", W: " + this.positionInfo["w"] + "\n");
+	myLight.position.x = this.reader.getFloat(positionInfo, "x", true);
+	myLight.position.y = this.reader.getFloat(positionInfo, "y", true);
+	myLight.position.z = this.reader.getFloat(positionInfo, "z", true);
+	myLight.position.w = this.reader.getFloat(positionInfo, "w", true);
+
+	console.log("\t\tX: " + myLight.position.x + ", Y: " + myLight.position.y + ", Z: " + myLight.position.z + ", W: " + myLight.position.w + "\n");
 
 	//ambient
 	var ambientLight = lightInfo.getElementsByTagName("ambient");
@@ -273,13 +271,13 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	console.log("ambient: ");
 
 	var ambientLightInfo = ambientLight[0];
-	this.ambientLightInfo = [];
-	this.ambientLightInfo["r"] = this.reader.getFloat(ambientLightInfo, "r", true);
-	this.ambientLightInfo["g"] = this.reader.getFloat(ambientLightInfo, "g", true);
-	this.ambientLightInfo["b"] = this.reader.getFloat(ambientLightInfo, "b", true);
-	this.ambientLightInfo["a"] = this.reader.getFloat(ambientLightInfo, "a", true);
 
-	console.log("\t\t\R: " + this.ambientLightInfo["r"] + ", G: " + this.ambientLightInfo["g"] + ", B: " + this.ambientLightInfo["g"] + ", A: " + this.ambientLightInfo["a"] + "\n");
+	myLight.ambient.r = this.reader.getFloat(ambientLightInfo, "r", true);
+	myLight.ambient.g = this.reader.getFloat(ambientLightInfo, "g", true);
+	myLight.ambient.b = this.reader.getFloat(ambientLightInfo, "b", true);
+	myLight.ambient.a = this.reader.getFloat(ambientLightInfo, "a", true);
+
+	console.log("\t\tR: " + myLight.ambient.r + ", G: " + myLight.ambient.g + ", B: " + myLight.ambient.b + ", A: " + myLight.ambient.a + "\n");
 	
 	//diffuse
 	var diffuse = lightInfo.getElementsByTagName("diffuse");
@@ -288,13 +286,13 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	console.log("diffuse: ");
 
 	var diffuseInfo = diffuse[0];
-	this.diffuseInfo = [];
-	this.diffuseInfo["r"] = this.reader.getFloat(diffuseInfo, "r", true);
-	this.diffuseInfo["g"] = this.reader.getFloat(diffuseInfo, "g", true);
-	this.diffuseInfo["b"] = this.reader.getFloat(diffuseInfo, "b", true);
-	this.diffuseInfo["a"] = this.reader.getFloat(diffuseInfo, "a", true);
 
-	console.log("\t\t\R: " + this.diffuseInfo["r"] + ", G: " + this.diffuseInfo["g"] + ", B: " + this.diffuseInfo["g"] + ", A: " + this.diffuseInfo["a"] + "\n");
+	myLight.diffuse.r = this.reader.getFloat(diffuseInfo, "r", true);
+	myLight.diffuse.g = this.reader.getFloat(diffuseInfo, "g", true);
+	myLight.diffuse.b = this.reader.getFloat(diffuseInfo, "b", true);
+	myLight.diffuse.a = this.reader.getFloat(diffuseInfo, "a", true);
+
+	console.log("\t\tR: " + myLight.diffuse.r + ", G: " + myLight.diffuse.g + ", B: " + myLight.diffuse.b + ", A: " + myLight.diffuse.a + "\n");
 	
 	//specular
 	var specular = lightInfo.getElementsByTagName("specular");
@@ -302,18 +300,18 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 
 	console.log("specular: ");
 
-	var specularInfo = specular[0];
-	this.specularInfo = [];
-	this.specularInfo["r"] = this.reader.getFloat(specularInfo, "r", true);
-	this.specularInfo["g"] = this.reader.getFloat(specularInfo, "g", true);
-	this.specularInfo["b"] = this.reader.getFloat(specularInfo, "b", true);
-	this.specularInfo["a"] = this.reader.getFloat(specularInfo, "a", true);
+	var specularInfo = specular[0]; 
 
-	console.log("\t\t\R: " + this.specularInfo["r"] + ", G: " + this.specularInfo["g"] + ", B: " + this.specularInfo["g"] + ", A: " + this.specularInfo["a"] + "\n");
+	myLight.specular.r = this.reader.getFloat(specularInfo, "r", true);
+	myLight.specular.g = this.reader.getFloat(specularInfo, "g", true);
+	myLight.specular.b = this.reader.getFloat(specularInfo, "b", true);
+	myLight.specular.a = this.reader.getFloat(specularInfo, "a", true);
+
+	console.log("\t\tR: " + myLight.specular.r + ", G: " + myLight.specular.g + ", B: " + myLight.specular.b + ", A: " + myLight.specular.a + "\n");
+
+	this.lightsList.push(myLight);
 
 	}
-
-
 
 }
 
@@ -677,8 +675,31 @@ MySceneGraph.prototype.onXMLError=function (message) {
 function Light(id) {
     this.id = id;
     this.enabled = false;
-    this.position = [];
-    this.ambient = [];
-    this.diffuse = [];
-    this.specular = [];
+    this.position = {
+    	x: 0.0,
+    	y: 0.0,
+    	z: 0.0,
+    	w: 0.0	
+    };
+
+    this.ambient = {
+    	r: 0.0,
+    	g: 0.0,
+    	b: 0.0,
+    	a: 0.0	
+    };
+
+    this.diffuse = {
+    	r: 0.0,
+    	g: 0.0,
+    	b: 0.0,
+    	a: 0.0	
+    };
+
+    this.specular = {
+    	r: 0.0,
+    	g: 0.0,
+    	b: 0.0,
+    	a: 0.0	
+    };
 }

@@ -11,8 +11,6 @@ XMLscene.prototype.init = function (application) {
 
     this.initCameras();
 
-    this.initLights();
-
 	this.enableTextures(true);
     this.gl.clearColor(1, 0.0, 0.0, 1.0);
 
@@ -63,12 +61,24 @@ XMLscene.prototype.initLights = function () {
 
     this.shader.bind();
 
-	this.lights[0].setPosition(2, 2, 5, 1);
-    this.lights[0].setDiffuse(1,1,1.0,1.0);
-    
-	this.lights[0].setVisible(true);
-    this.lights[0].update();
- 
+    for(var i = 0; i<this.graph.lightsList.length; i++){
+
+		this.lights[i].setPosition(this.graph.lightsList[i].position.x, this.graph.lightsList[i].position.y, this.graph.lightsList[i].position.z, this.graph.lightsList[i].position.w);
+	    this.lights[i].setDiffuse(this.graph.lightsList[i].diffuse.r, this.graph.lightsList[i].diffuse.g, this.graph.lightsList[i].diffuse.b, this.graph.lightsList[i].diffuse.a);
+	    this.lights[i].setAmbient(this.graph.lightsList[i].ambient.r, this.graph.lightsList[i].ambient.g, this.graph.lightsList[i].ambient.b, this.graph.lightsList[i].ambient.a);
+	    this.lights[i].setSpecular(this.graph.lightsList[i].specular.r, this.graph.lightsList[i].specular.g, this.graph.lightsList[i].specular.b, this.graph.lightsList[i].specular.a);
+
+		this.lights[i].setVisible(true);
+
+		if(this.graph.lightsList[i].enabled)
+			this.lights[i].enable();
+		else this.lights[i].disable();
+	 	
+	  	
+	    this.lights[i].update();
+
+	}
+
     this.shader.unbind();
 };
 
@@ -86,16 +96,14 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
-
 	//ILLUMINATION
-
 	//background
 	this.gl.clearColor(this.graph.backgroundInfo['r'],this.graph.backgroundInfo['g'],this.graph.backgroundInfo['b'],this.graph.backgroundInfo['a']);
 	
 	//ambient
 	this.setGlobalAmbientLight(this.graph.ambientInfo['r'],this.graph.ambientInfo['g'],this.graph.ambientInfo['b'],this.graph.ambientInfo['a']); 
 
-    this.lights[0].enable();
+	this.initLights();
 };
 
 XMLscene.prototype.display = function () {
@@ -123,10 +131,13 @@ XMLscene.prototype.display = function () {
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
-	if (this.graph.loadedOk)
-	{
-		this.lights[0].update();
-	}
+	
+
+	if (this.graph.loadedOK) {
+        //Lights
+        for (var i = 0; i < this.graph.lightsList.length; i++)
+            this.lights[i].update();
+    }
 
 	    // Plane Wall
 	this.pushMatrix();
