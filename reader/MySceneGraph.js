@@ -325,6 +325,8 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 
 	console.log("TEXTURES: \n");
 
+	this.texturesList = [];
+
 	var textures = rootElement.getElementsByTagName('TEXTURES');
 	if(textures == null) return "TEXTURES tag not found!";
 
@@ -337,31 +339,30 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 
 	var textureInfo = texture[i];
 
-	this.textureInfo = [];
-	this.textureInfo["id"] = this.reader.getString(textureInfo, "id", true);
+	var myTexture = new Texture(this.reader.getString(textureInfo, "id", true));
 
-	console.log("\tTEXTURE id: " + this.textureInfo["id"] + "\n");
+	console.log("\tTEXTURE id: " + myTexture.id + "\n");
 
 	var file = textureInfo.getElementsByTagName('file');
 	if(file == null) return "file tag not found!";
 
 	var fileInfo = file[0];
 
-	this.fileInfo = [];
-	this.fileInfo["path"] = this.reader.getString(fileInfo, "path", true);
+	myTexture.filePath = this.reader.getString(fileInfo, "path", true);
 
-	console.log("\tfile path: " + this.fileInfo["path"] + "\n");
+	console.log("\tfile path: " + myTexture.filePath + "\n");
 
 	var ampliFactor = textureInfo.getElementsByTagName('amplif_factor');
 	if(ampliFactor == null) return "amplif_factor tag not found!";
 
 	var ampliFactorInfo = ampliFactor[0];
 
-	this.ampliFactorInfo = [];
-	this.ampliFactorInfo["s"] = this.reader.getFloat(ampliFactorInfo, "s", true);
-	this.ampliFactorInfo["t"] = this.reader.getFloat(ampliFactorInfo, "t", true);
+	myTexture.amplifFactor_S = this.reader.getFloat(ampliFactorInfo, "s", true);
+	myTexture.amplifFactor_T = this.reader.getFloat(ampliFactorInfo, "t", true);
 
-	console.log("\tamplif_factor s: " + this.ampliFactorInfo["s"] + ", t: " + this.ampliFactorInfo["t"] + "\n\n");
+	console.log("\tamplif_factor s: " + myTexture.amplifFactor_S  + ", t: " + myTexture.amplifFactor_T + "\n\n");
+
+	this.texturesList.push(myTexture);
 
 	}
 
@@ -370,97 +371,98 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 //Parser MATERIALS
 MySceneGraph.prototype.parseMaterials= function(rootElement) {
 
-
 	console.log("MATERIALS: \n");
 
-	var lights = rootElement.getElementsByTagName('MATERIALS');
-	if(lights == null) return "MATERIALS tag not found!";
+	this.materialsList = [];
 
-	var lightsInfo = lights[0];
+	var materials = rootElement.getElementsByTagName('MATERIALS');
+	if(materials == null) return "MATERIALS tag not found!";
 
-	var light = lightsInfo.getElementsByTagName('MATERIAL');
-	if(light == null) return "MATERIAL tag not found!";
+	var materialsInfo = materials[0];
 
-	for(var i = 0; i < light.length; i++){
+	var material = materialsInfo.getElementsByTagName('MATERIAL');
+	if(material == null) return "MATERIAL tag not found!";
 
-	
-	var lightInfo = light[i];
+	for(var i = 0; i < material.length; i++){
 
-	this.lightInfo = [];
-	this.lightInfo["id"] = this.reader.getString(lightInfo, "id", true);
+	var materialInfo = material[i];
 
-	console.log("\tMATERIAL id: " + this.lightInfo["id"] + "\n");
+	var myMaterial = new Material(this.reader.getString(materialInfo, "id", true));
+
+	console.log("\tMATERIAL id: " + myMaterial.id + "\n");
 	
 	//shininess
-	var shininess = lightInfo.getElementsByTagName('shininess');
+	var shininess = materialInfo.getElementsByTagName('shininess');
 	if(shininess == null) return "shininess tag not found!";
 
-	var enableInfo = shininess[0];
+	var shininessInfo = shininess[0];
 
-	this.enableInfo = [];
-	this.enableInfo["value"] =  this.reader.getFloat(enableInfo, 'value', true);
+	myMaterial.shininessValue = this.reader.getFloat(shininessInfo, 'value', true);
 
-	console.log("\tenable value: " + this.enableInfo["value"] + "\n");
-	
-
-
-	//ambient
-	var ambient = lightInfo.getElementsByTagName("ambient");
-	if(ambient == null) return "ambient not found!";
-
-	console.log("ambient: ");
-
-	var ambientInfo = ambient[0];
-	this.ambientInfo = [];
-	this.ambientInfo["r"] = this.reader.getFloat(ambientInfo, "r", true);
-	this.ambientInfo["g"] = this.reader.getFloat(ambientInfo, "g", true);
-	this.ambientInfo["b"] = this.reader.getFloat(ambientInfo, "b", true);
-	this.ambientInfo["a"] = this.reader.getFloat(ambientInfo, "a", true);
-
-	console.log("\t\t\R: " + this.ambientInfo["r"] + ", G: " + this.ambientInfo["g"] + ", B: " + this.ambientInfo["g"] + ", A: " + this.ambientInfo["a"] + "\n");
-	
-	//diffuse
-	var diffuse = lightInfo.getElementsByTagName("diffuse");
-	if(diffuse == null) return "diffuse not found!";
-
-	console.log("diffuse: ");
-
-	var diffuseInfo = diffuse[0];
-	this.diffuseInfo = [];
-	this.diffuseInfo["r"] = this.reader.getFloat(diffuseInfo, "r", true);
-	this.diffuseInfo["g"] = this.reader.getFloat(diffuseInfo, "g", true);
-	this.diffuseInfo["b"] = this.reader.getFloat(diffuseInfo, "b", true);
-	this.diffuseInfo["a"] = this.reader.getFloat(diffuseInfo, "a", true);
-
-	console.log("\t\t\R: " + this.diffuseInfo["r"] + ", G: " + this.diffuseInfo["g"] + ", B: " + this.diffuseInfo["g"] + ", A: " + this.diffuseInfo["a"] + "\n");
+	console.log("\tshininess value: " + myMaterial.shininessValue + "\n");
 	
 	//specular
-	var specular = lightInfo.getElementsByTagName("specular");
+	var specular = materialInfo.getElementsByTagName("specular");
 	if(specular == null) return "specular not found!";
 
 	console.log("specular: ");
 
 	var specularInfo = specular[0];
-	this.specularInfo = [];
-	this.specularInfo["r"] = this.reader.getFloat(specularInfo, "r", true);
-	this.specularInfo["g"] = this.reader.getFloat(specularInfo, "g", true);
-	this.specularInfo["b"] = this.reader.getFloat(specularInfo, "b", true);
-	this.specularInfo["a"] = this.reader.getFloat(specularInfo, "a", true);
+
+	myMaterial.specular.r = this.reader.getFloat(specularInfo, "r", true);
+	myMaterial.specular.g = this.reader.getFloat(specularInfo, "g", true);
+	myMaterial.specular.b = this.reader.getFloat(specularInfo, "b", true);
+	myMaterial.specular.a  = this.reader.getFloat(specularInfo, "a", true);
+
+	console.log("\t\t\R: " + myMaterial.specular.r + ", G: " + myMaterial.specular.g + ", B: " + myMaterial.specular.b + ", A: " + myMaterial.specular.a + "\n");
+
+	//diffuse
+	var diffuse = materialInfo.getElementsByTagName("diffuse");
+	if(diffuse == null) return "diffuse not found!";
+
+	console.log("diffuse: ");
+
+	var diffuseInfo = diffuse[0];
+
+	myMaterial.diffuse.r = this.reader.getFloat(diffuseInfo, "r", true);
+	myMaterial.diffuse.g = this.reader.getFloat(diffuseInfo, "g", true);
+	myMaterial.diffuse.b = this.reader.getFloat(diffuseInfo, "b", true);
+	myMaterial.diffuse.a = this.reader.getFloat(diffuseInfo, "a", true);
+
+	console.log("\t\t\R: " + myMaterial.diffuse.r + ", G: " + myMaterial.diffuse.g + ", B: " + myMaterial.diffuse.b + ", A: " + myMaterial.diffuse.a + "\n");
+	
+	//ambient
+	var ambient = materialInfo.getElementsByTagName("ambient");
+	if(ambient == null) return "ambient not found!";
+
+	console.log("ambient: ");
+
+	var ambientInfo = ambient[0];
+
+	myMaterial.ambient.r = this.reader.getFloat(ambientInfo, "r", true);
+	myMaterial.ambient.g = this.reader.getFloat(ambientInfo, "g", true);
+	myMaterial.ambient.b = this.reader.getFloat(ambientInfo, "b", true);
+	myMaterial.ambient.a = this.reader.getFloat(ambientInfo, "a", true);
+
+	console.log("\t\t\R: " + myMaterial.ambient.r + ", G: " + myMaterial.ambient.g + ", B: " + myMaterial.ambient.b + ", A: " + myMaterial.ambient.a + "\n");
 
 	//emission
-	var emission = lightInfo.getElementsByTagName("emission");
+	var emission = materialInfo.getElementsByTagName("emission");
 	if(emission == null) return "emission not found!";
 
 	console.log("emission: ");
 
 	var emissionInfo = emission[0];
-	this.emissionInfo = [];
-	this.emissionInfo["r"] = this.reader.getFloat(emissionInfo, "r", true);
-	this.emissionInfo["g"] = this.reader.getFloat(emissionInfo, "g", true);
-	this.emissionInfo["b"] = this.reader.getFloat(emissionInfo, "b", true);
-	this.emissionInfo["a"] = this.reader.getFloat(emissionInfo, "a", true);
 
-	console.log("\t\t\R: " + this.emissionInfo["r"] + ", G: " + this.emissionInfo["g"] + ", B: " + this.emissionInfo["g"] + ", A: " + this.emissionInfo["a"] + "\n");
+	myMaterial.emission.r = this.reader.getFloat(emissionInfo, "r", true);
+	myMaterial.emission.g = this.reader.getFloat(emissionInfo, "g", true);
+	myMaterial.emission.b = this.reader.getFloat(emissionInfo, "b", true);
+	myMaterial.emission.a = this.reader.getFloat(emissionInfo, "a", true);
+
+	console.log("\t\t\R: " + myMaterial.emission.r + ", G: " + myMaterial.emission.g + ", B: " + myMaterial.emission.b + ", A: " + myMaterial.emission.a + "\n");
+	
+	this.materialsList.push(myMaterial);
+
 	}
 }
 //Parser LEAVES
@@ -684,6 +686,45 @@ function Light(id) {
     };
 
     this.specular = {
+    	r: 0.0,
+    	g: 0.0,
+    	b: 0.0,
+    	a: 0.0	
+    };
+}
+
+function Texture(id) {
+    this.id = id;
+    this.filePath = "";
+    this.amplifFactor_S = 0.0;
+    this.amplifFactor_T = 0.0;
+}
+
+function Material(id) {
+    this.id = id;
+    this.shininessValue = 0.0;
+    this.specular = {
+    	r: 0.0,
+    	g: 0.0,
+    	b: 0.0,
+    	a: 0.0	
+    };
+
+    this.diffuse = {
+    	r: 0.0,
+    	g: 0.0,
+    	b: 0.0,
+    	a: 0.0	
+    };
+
+    this.ambient = {
+    	r: 0.0,
+    	g: 0.0,
+    	b: 0.0,
+    	a: 0.0	
+    };
+
+    this.emission = {
     	r: 0.0,
     	g: 0.0,
     	b: 0.0,
