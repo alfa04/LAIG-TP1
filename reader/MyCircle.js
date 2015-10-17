@@ -2,11 +2,11 @@
  * MyCircle
  * @constructor
  */
-function MyCircle(scene, slices) {
+function MyCircle(scene, rad, slices) {
     CGFobject.call(this, scene);
 
     this.slices = slices;
-
+    this.rad = rad;
     this.ang = 2 * Math.PI / (this.slices);
 
     this.initBuffers();
@@ -30,16 +30,16 @@ MyCircle.prototype.initBuffers = function () {
 
     for (var slice = 0; slice < this.slices; slice++) {
         /* vertices */
-        this.vertices.push(Math.cos(slice * this.ang));
-        this.vertices.push(Math.sin(slice * this.ang));
+        this.vertices.push(this.rad*Math.cos(slice * this.ang));
+        this.vertices.push(this.rad*Math.sin(slice * this.ang));
         this.vertices.push(0);
 
         /* normals */
         this.normals.push(0, 0, 1);
 
         /* textures */
-        this.texCoords.push(0.5 * this.vertices[3 * (1 + slice)] + 0.5);
-        this.texCoords.push(-0.5 * this.vertices[3 * (1 + slice) + 1] + 0.5);
+        this.texCoords.push(0.5 + 0.5 * Math.cos(slice * this.ang));
+        this.texCoords.push(0.5 - 0.5 * Math.sin(slice * this.ang));
     }
 
     /* indices */

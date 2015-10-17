@@ -23,7 +23,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
-	this.wall = new Plane(this);
+	//this.wall = new Plane(this, [0,5,5,0]);
 
 	// Material Wall
 	this.materialWall = new CGFappearance(this);
@@ -35,7 +35,7 @@ XMLscene.prototype.init = function (application) {
 	this.materialWall.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
 
-	this.cylinder = new MyCoveredCylinder(this,6,6);
+	//this.cylinder = new MyCoveredCylinder(this,[20,6,3,20,20]);
 
 	// Material Wall
 	this.materialcylinder = new CGFappearance(this);
@@ -162,16 +162,32 @@ XMLscene.prototype.display = function () {
 	}
 
 	    // Plane Wall
-	this.pushMatrix();
+	/*this.pushMatrix();
 	this.scale(15, 8, 0);
 	this.materialWall.apply();
 	this.wall.display();
-	this.popMatrix();
+	this.popMatrix();*/
 
 	//this.materialtriangle.apply();
 	//this.cylinder.display();
+
+
+	//**************************************************************
+	//TESTES ÀS LEAFS INTRODUZIdas
+	//retangulo (primeira leaf logo posiçao zero no vector de leafs)
+	this.materialWall.apply();
+	this.leaveslist[0].display();
+	//triangulo
+	this.materialtriangle.apply();
+	this.leaveslist[7].display();
+	//esfera
 	this.materialtriangle.apply();
 	this.leaveslist[6].display();
+	//cilindro
+	this.materialcylinder.apply();
+	this.leaveslist[4].display();
+
+	//testes
  	this.pushMatrix();
 	this.translate(0, 0, 1);
 	this.materialtriangle.apply();
@@ -199,17 +215,6 @@ XMLscene.prototype.setInitials = function() {
     this.scale(this.graph.initialsInfo.scale['sx'], this.graph.initialsInfo.scale['sy'], this.graph.initialsInfo.scale['sz']);
 };
 
-XMLscene.prototype.findRootNode = function() {
-	
-	for(var i = 0; i<this.graph.nodesList.length; i++){
-		if(this.graph.nodesList[i].id == this.rootInfo["id"]){
-			return i;
-		}
-
-	}
-
-};
-
 XMLscene.prototype.setLeaves = function() {
 	//console.log("yyyyyyyyyyyyyyyyyyyyyyyyyy" + this.graph.leaveslist[0]);
 	for (var i = 0; i < this.graph.leaveslist.length; i++) {
@@ -217,23 +222,23 @@ XMLscene.prototype.setLeaves = function() {
 		//console.log("WWWWWWWWWWWWWWWWW"+leaf);
 		switch (leaf.type) {
             case "rectangle":
-                var rectangle = new Plane(this);
+                var rectangle = new Plane(this,leaf.args[0]);
                 rectangle.id = leaf.id;
                 this.leaveslist.push(rectangle);
+                //console.log("RRRRR"+leaf.args[0]);
                 break;
             case "cylinder":
-                cylinder = new MyCoveredCylinder(this,6,6);
+                cylinder = new MyCoveredCylinder(this,leaf.args[0]);
                 cylinder.id = leaf.id;
                 this.leaveslist.push(cylinder);
                 break;
-           /* case "sphere":
-                sphere = new MySphere(this, leaf.args);
+            case "sphere":
+                sphere = new sphere(this, leaf.args[0]);
                 sphere.id = leaf.id;
                 this.leaveslist.push(sphere);
-                break;*/
+                break;
             case "triangle":
                 triangle = new MyTriangle(this,leaf.args);
-                console.log("TTTTTTTTT"+leaf.args);
                 triangle.id = leaf.id;
                 this.leaveslist.push(triangle);
                 break;

@@ -5,14 +5,15 @@
 
 var degToRad = Math.PI / 180.0;
 
-function MyCylinder(scene, slices, stacks) {
+function MyCylinder(scene, slices, stacks, topRadius, bottomRadius) {
     CGFobject.call(this, scene);
 
     this.slices = slices;
     this.stacks = stacks;
-
+    this.topRadius = topRadius;
+    this.bottomRadius = bottomRadius;
     this.ang = 360 * degToRad / (this.slices);
-    this.height = 1.0 / (this.stacks);
+    //this.height = 1.0 / (this.stacks);
 
     this.initBuffers();
 };
@@ -27,63 +28,45 @@ MyCylinder.prototype.initBuffers = function () {
     this.normals = [];
     this.texCoords = [];
 
-    for (var stack = 0; stack <= this.stacks; stack++) {
+    var numVertices = this.slices * 2;
+    var delta_rad = (this.bottomRadius - this.topRadius) / this.stacks;
 
-        for (var slice = 0; slice < this.slices; slice++) {
-            /* vertices */
-            //push vertices from current slice
-            this.vertices.push(Math.cos(slice * this.ang));
-            this.vertices.push(Math.sin(slice * this.ang));
-            this.vertices.push(stack * this.height);
+    var Z = 0.5;
+    var currentIndex = 0;
+    var maxIndex = 0;
 
-            /* normals */
-            //normals to the perfect imaginary cylinder in each vertice
-            this.normals.push(Math.cos(slice * this.ang));
-            this.normals.push(Math.sin(slice * this.ang));
-            this.normals.push(0);
+    var a = 0,
+        b = 0;
 
-            /* textures */
-            if (slice <= this.slices / 2)
-                this.texCoords.push(slice / (this.slices), stack / this.stacks);
-            else
-                this.texCoords.push((this.slices - slice) / (this.slices), stack / this.stacks);
+    for (s = 0; s < this.stacks; s++, currentIndex = s * numVertices) {
+        for (i = 0; i < this.slices; i++, maxIndex += 2) {
+
+            this.vertices.push((this.topRadius + delta_rad*s)*Math.cos(i * this.ang), (this.topRadius + delta_rad*s)*Math.sin(i * this.ang), Z);
+            this.normals.push(Math.cos(i * this.ang), Math.sin(i * this.ang), 0);
+            this.texCoords.push(a, b);
+
+
+            this.vertices.push((this.topRadius + delta_rad*(s+1))*Math.cos(i * this.ang), (this.topRadius + delta_rad*(s+1))*Math.sin(i * this.ang), Z - 1.0 / this.stacks);
+            this.normals.push(Math.cos(i * this.ang), Math.sin(i * this.ang), 0);
+            this.texCoords.push(a, b + 1.0 / this.stacks);
+
+            a += 1 / this.slices;
         }
-    }
+        a = 0;
+        b += 1 / this.stacks;
 
-    for (var stack = 1; stack <= this.stacks; stack++) {
-
-        var cur_stack_offset = stack * this.slices;
-        var prev_stack_offset = cur_stack_offset - this.slices;
-
-        //special case for first slice
-        this.indices.push(cur_stack_offset + this.slices - 1);
-        this.indices.push(prev_stack_offset + this.slices - 1);
-        this.indices.push(prev_stack_offset + 0);
-
-        this.indices.push(cur_stack_offset + this.slices - 1);
-        this.indices.push(prev_stack_offset + 0);
-        this.indices.push(cur_stack_offset + 0);
-
-        /* indices */
-        for (var slice = 1; slice < this.slices; slice++) {
-
-            /*
-             *|stack\slice|	prev	cur
-             *	cur			 3		 4
-             *	prev		 1		 2
-             *
-             *
-             * triangles:   3,1,2   ;   3,2,4
-             */
-
-            this.indices.push(cur_stack_offset + slice - 1);
-            this.indices.push(prev_stack_offset + slice - 1);
-            this.indices.push(prev_stack_offset + slice - 0);
-
-            this.indices.push(cur_stack_offset + slice - 1);
-            this.indices.push(prev_stack_offset + slice - 0);
-            this.indices.push(cur_stack_offset + slice - 0);
+        for (i = 0; i < this.slices - 1; i++, currentIndex += 2) {
+            this.indices.push(currentIndex, currentIndex + 1, currentIndex + 2);
+            this.indices.push(currentIndex + 2, currentIndex + 1, currentIndex + 3);
         }
+
+        /*
+         Last slice (with vertices from the first)
+         */
+        this.indices.push(currentIndex, currentIndex + 1, s * numVertices);
+        this.indices.push(s * numVertices, currentIndex + 1, s * numVertices + 1);
+
+        Z -= 1.0 / this.stacks;
     }
 
     this.primitiveType = this.scene.gl.TRIANGLES;
