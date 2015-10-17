@@ -19,6 +19,8 @@ XMLscene.prototype.init = function (application) {
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+    this.leaveslist = [];
+
 	this.axis=new CGFaxis(this);
 
 	this.wall = new Plane(this);
@@ -166,9 +168,10 @@ XMLscene.prototype.display = function () {
 	this.wall.display();
 	this.popMatrix();
 
-	this.materialcylinder.apply();
-	this.cylinder.display();
-
+	//this.materialtriangle.apply();
+	//this.cylinder.display();
+	this.materialtriangle.apply();
+	this.leaveslist[6].display();
  	this.pushMatrix();
 	this.translate(0, 0, 1);
 	this.materialtriangle.apply();
@@ -210,7 +213,30 @@ XMLscene.prototype.findRootNode = function() {
 XMLscene.prototype.setLeaves = function() {
 	//console.log("yyyyyyyyyyyyyyyyyyyyyyyyyy" + this.graph.leaveslist[0]);
 	for (var i = 0; i < this.graph.leaveslist.length; i++) {
-		var leaf = this.graph.leaveslist[i].args;
-		//console.log("yyyyyyyyyyyyyyyyyyyyyyyyyy" + leaf);
+		var leaf = this.graph.leaveslist[i];
+		//console.log("WWWWWWWWWWWWWWWWW"+leaf);
+		switch (leaf.type) {
+            case "rectangle":
+                var rectangle = new Plane(this);
+                rectangle.id = leaf.id;
+                this.leaveslist.push(rectangle);
+                break;
+            case "cylinder":
+                cylinder = new MyCoveredCylinder(this,6,6);
+                cylinder.id = leaf.id;
+                this.leaveslist.push(cylinder);
+                break;
+           /* case "sphere":
+                sphere = new MySphere(this, leaf.args);
+                sphere.id = leaf.id;
+                this.leaveslist.push(sphere);
+                break;*/
+            case "triangle":
+                triangle = new MyTriangle(this,leaf.args);
+                console.log("TTTTTTTTT"+leaf.args);
+                triangle.id = leaf.id;
+                this.leaveslist.push(triangle);
+                break;
+        }
 	}
 }

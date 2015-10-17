@@ -500,8 +500,24 @@ MySceneGraph.prototype.parseLeaves= function(rootElement) {
 
 	else if(leafInfo.type == "triangle"){
 		var aux = this.reader.getString(leaf[i], "args", true);
-		leafInfo.args.push(aux.split("  "));
-		console.log(leafInfo.args); 
+		var aux2 = aux.split("  ");
+		//console.log("sssssssssssssssss"+aux2[2].split(" ")[1]); 
+		leafInfo.args.push(parseFloat(aux2[0].split(" ")[0]));
+		leafInfo.args.push(parseFloat(aux2[0].split(" ")[1]));
+		leafInfo.args.push(parseFloat(aux2[0].split(" ")[2]));
+		leafInfo.args.push(parseFloat(aux2[1].split(" ")[0]));
+		leafInfo.args.push(parseFloat(aux2[1].split(" ")[1]));
+		leafInfo.args.push(parseFloat(aux2[1].split(" ")[2]));
+		leafInfo.args.push(parseFloat(aux2[2].split(" ")[0]));
+		leafInfo.args.push(parseFloat(aux2[2].split(" ")[1]));
+		leafInfo.args.push(parseFloat(aux2[2].split(" ")[2]));
+
+		/*for(var i=0; i < 3; i++) {
+			for(var j=0; j < 3; j++) {
+				leafInfo.args.push(parseFloat(aux2[i].split(" ")[j]));
+			}
+		}*/
+		//console.log(leafInfo.args); 
 	}
 
 	this.leaveslist.push(leafInfo);
