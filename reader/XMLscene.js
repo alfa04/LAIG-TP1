@@ -20,6 +20,8 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
     this.leaveslist = [];
+    this.texturesList = [];
+    this.materialsList = [];
 
 	this.axis=new CGFaxis(this);
 
@@ -117,6 +119,33 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	//LIGHTS
     this.initLights();
+
+    //TEXTURES
+
+	this.enableTextures(true);
+	for(var i = 0; i<this.graph.texturesList.length; i++){
+		var texture = [];
+		this.texture = new CGFtexture(this, this.graph.texturesList[i].filePath);
+		this.texture["id"] = this.graph.texturesList[i].id;
+		this.texture["filePath"] = this.graph.texturesList[i].filePath;
+		this.texture["amplifFactor_S"] = this.graph.texturesList[i].amplifFactor_S;
+		this.texture["amplifFactor_T"] = this.graph.texturesList[i].amplifFactor_T;
+		this.texturesList.push(texture);	
+	}    
+
+    //MATERIALS
+
+    for(var i = 0; i<this.graph.materialsList.length; i++){
+		var material = [];
+		this.material = new CGFappearance(this, this.graph.materialsList[i].id);
+		this.material["id"] = this.graph.materialsList[i].id;
+		this.material.setShininess(this.graph.materialsList[i].shininess);
+		this.material.setSpecular(this.graph.materialsList[i].specular.r, this.graph.materialsList[i].specular.g, this.graph.materialsList[i].specular.b, this.graph.materialsList[i].specular.a);
+		this.material.setDiffuse(this.graph.materialsList[i].diffuse.r, this.graph.materialsList[i].diffuse.g, this.graph.materialsList[i].diffuse.b, this.graph.materialsList[i].diffuse.a);
+		this.material.setAmbient(this.graph.materialsList[i].ambient.r, this.graph.materialsList[i].ambient.g, this.graph.materialsList[i].ambient.b, this.graph.materialsList[i].ambient.a);
+		this.material.setEmission(this.graph.materialsList[i].emission.r, this.graph.materialsList[i].emission.g, this.graph.materialsList[i].emission.b, this.graph.materialsList[i].emission.a);
+		this.materialList.push(material);	
+	}  
 
     //LEAVES
     this.setLeaves();
@@ -232,7 +261,7 @@ XMLscene.prototype.setLeaves = function() {
                 this.leaveslist.push(sphere);
                 break;*/
             case "triangle":
-                triangle = new MyTriangle(this,leaf.args);
+                triangle = new MyTriangle(this,leaf.args); 	
                 console.log("TTTTTTTTT"+leaf.args);
                 triangle.id = leaf.id;
                 this.leaveslist.push(triangle);
