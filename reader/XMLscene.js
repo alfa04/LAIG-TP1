@@ -204,7 +204,7 @@ XMLscene.prototype.display = function () {
 	//**************************************************************
 	//TESTES ÀS LEAFS INTRODUZIdas
 	//retangulo (primeira leaf logo posiçao zero no vector de leafs)
-/*	this.materialWall.apply();
+	this.materialWall.apply();
 	this.leaveslist[0].display();
 	//triangulo
 	this.materialtriangle.apply();
@@ -214,7 +214,7 @@ XMLscene.prototype.display = function () {
 	this.leaveslist[6].display();
 	//cilindro
 	this.materialcylinder.apply();
-	this.leaveslist[4].display();*/
+	this.leaveslist[4].display();
 
 	//testes
  	this.pushMatrix();
