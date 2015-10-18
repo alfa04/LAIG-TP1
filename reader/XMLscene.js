@@ -144,7 +144,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.material.setDiffuse(this.graph.materialsList[i].diffuse.r, this.graph.materialsList[i].diffuse.g, this.graph.materialsList[i].diffuse.b, this.graph.materialsList[i].diffuse.a);
 		this.material.setAmbient(this.graph.materialsList[i].ambient.r, this.graph.materialsList[i].ambient.g, this.graph.materialsList[i].ambient.b, this.graph.materialsList[i].ambient.a);
 		this.material.setEmission(this.graph.materialsList[i].emission.r, this.graph.materialsList[i].emission.g, this.graph.materialsList[i].emission.b, this.graph.materialsList[i].emission.a);
-		this.materialList.push(material);	
+		this.materialsList.push(material);	
 	}  
 
     //LEAVES
@@ -204,7 +204,7 @@ XMLscene.prototype.display = function () {
 	//**************************************************************
 	//TESTES ÀS LEAFS INTRODUZIdas
 	//retangulo (primeira leaf logo posiçao zero no vector de leafs)
-	this.materialWall.apply();
+/*	this.materialWall.apply();
 	this.leaveslist[0].display();
 	//triangulo
 	this.materialtriangle.apply();
@@ -214,7 +214,7 @@ XMLscene.prototype.display = function () {
 	this.leaveslist[6].display();
 	//cilindro
 	this.materialcylinder.apply();
-	this.leaveslist[4].display();
+	this.leaveslist[4].display();*/
 
 	//testes
  	this.pushMatrix();
