@@ -490,7 +490,11 @@ MySceneGraph.prototype.parseLeaves= function(rootElement) {
 	}
 	else if(leafInfo.type == "cylinder"){
 		var aux = this.reader.getString(leaf[i], "args", true);
-		leafInfo.args.push(aux.split(" "));
+		leafInfo.args.push(parseFloat(aux.split(" ")[0]));
+		leafInfo.args.push(parseFloat(aux.split(" ")[1]));
+		leafInfo.args.push(parseFloat(aux.split(" ")[2]));
+		leafInfo.args.push(parseFloat(aux.split(" ")[3]));
+		leafInfo.args.push(parseFloat(aux.split(" ")[4]));
 		console.log(leafInfo.args); 
 	}
 

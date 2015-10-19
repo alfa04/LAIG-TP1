@@ -26,40 +26,6 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
-	//this.wall = new Plane(this, [0,5,5,0]);
-
-	// Material Wall
-/*	this.materialWall = new CGFappearance(this);
-	this.materialWall.setAmbient(0.5, 0.5, 0.5, 1);
-	this.materialWall.setDiffuse(0.5, 0.3, 0.5, 1);
-	this.materialWall.setSpecular(0.15, 0.15, 0.15, 1);
-	this.materialWall.setShininess(10);
-	this.materialWall.loadTexture("floor.png");
-	this.materialWall.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");*/
-
-
-	//this.cylinder = new MyCoveredCylinder(this,[20,6,3,20,20]);
-
-	// Material Wall
-	/*this.materialcylinder = new CGFappearance(this);
-	this.materialcylinder.setAmbient(0.5, 0.5, 0.5, 1);
-	this.materialcylinder.setDiffuse(0.5, 0.3, 0.5, 1);
-	this.materialcylinder.setSpecular(0.15, 0.15, 0.15, 1);
-	this.materialcylinder.setShininess(10);
-	this.materialcylinder.loadTexture("floor.png");
-	this.materialcylinder.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
-
-	this.triangle = new MyTriangle(this, [0.0,0.0,0.0,3.0,0.0,0.0,3.0,3.0,0.0]);
-
-	// Material Wall
-	this.materialtriangle = new CGFappearance(this);
-	this.materialtriangle.setAmbient(0.5, 0.5, 0.5, 1);
-	this.materialtriangle.setDiffuse(0.5, 0.3, 0.5, 1);
-	this.materialtriangle.setSpecular(0.15, 0.15, 0.15, 1);
-	this.materialtriangle.setShininess(10);
-	this.materialtriangle.loadTexture("head.png");
-	this.materialtriangle.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");*/
-
 }
 
 XMLscene.prototype.initLights = function () {
@@ -68,18 +34,17 @@ XMLscene.prototype.initLights = function () {
 
     for(var i = 0; i<this.graph.lightsList.length; i++){
 
-		this.lights[i].setPosition(this.graph.lightsList[i].position.x, this.graph.lightsList[i].position.y, this.graph.lightsList[i].position.z, this.graph.lightsList[i].position.w);
+		if(this.graph.lightsList[i].enabled)
+			this.lights[i].enable();
+		else this.lights[i].disable();
+
+    	this.lights[i].setPosition(this.graph.lightsList[i].position.x, this.graph.lightsList[i].position.y, this.graph.lightsList[i].position.z, this.graph.lightsList[i].position.w);
 	    this.lights[i].setDiffuse(this.graph.lightsList[i].diffuse.r, this.graph.lightsList[i].diffuse.g, this.graph.lightsList[i].diffuse.b, this.graph.lightsList[i].diffuse.a);
 	    this.lights[i].setAmbient(this.graph.lightsList[i].ambient.r, this.graph.lightsList[i].ambient.g, this.graph.lightsList[i].ambient.b, this.graph.lightsList[i].ambient.a);
 	    this.lights[i].setSpecular(this.graph.lightsList[i].specular.r, this.graph.lightsList[i].specular.g, this.graph.lightsList[i].specular.b, this.graph.lightsList[i].specular.a);
 
 		this.lights[i].setVisible(true);
 
-		if(this.graph.lightsList[i].enabled)
-			this.lights[i].enable();
-		else this.lights[i].disable();
-	 	
-	  	
 	    this.lights[i].update();
 
 	}
@@ -119,7 +84,6 @@ XMLscene.prototype.onGraphLoaded = function ()
 	
 	//ambient
 	this.setGlobalAmbientLight(this.graph.ambientInfo['r'],this.graph.ambientInfo['g'],this.graph.ambientInfo['b'],this.graph.ambientInfo['a']); 
-
 	//LIGHTS
     this.initLights();
 
@@ -196,7 +160,7 @@ XMLscene.prototype.display = function () {
         this.setInitials();
 
 		//Lights
-        for (var i = 0; i < this.graph.lightsList.length; i++)
+        for (var i = 0; i < this.lights.length; i++)
             this.lights[i].update();
 
         //Nodes
@@ -213,7 +177,6 @@ XMLscene.prototype.display = function () {
             this.multMatrix(node["matrix"]);
             node["primitive"].display();
             this.popMatrix();
-            console.log(node["id"] + node["texture"].id + node["material"].id + node["primitive"].id);
         }
 	}
 
@@ -285,7 +248,7 @@ XMLscene.prototype.setLeaves = function() {
                 //console.log("RRRRR"+leaf.args[0]);
                 break;
             case "cylinder":
-                cylinder = new MyCoveredCylinder(this,leaf.args[0]);
+                cylinder = new MyCoveredCylinder(this,leaf.args);
                 cylinder.id = leaf.id;
                 this.leaveslist.push(cylinder);
                 break;
