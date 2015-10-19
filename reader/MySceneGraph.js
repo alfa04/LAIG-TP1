@@ -348,7 +348,7 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 
 	var fileInfo = file[0];
 
-	myTexture.filePath = this.reader.getString(fileInfo, "path", true);
+	myTexture.filePath = "scenes/" + this.reader.getString(fileInfo, "path", true);
 
 	console.log("\tfile path: " + myTexture.filePath + "\n");
 
