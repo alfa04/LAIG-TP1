@@ -32,12 +32,15 @@ XMLscene.prototype.initLights = function () {
 
     this.shader.bind();
 
+    this.lightsNo = [];
+
     for(var i = 0; i<this.graph.lightsList.length; i++){
 
 		if(this.graph.lightsList[i].enabled)
 			this.lights[i].enable();
 		else this.lights[i].disable();
 
+		this.lights[i].id = this.graph.lightsList[i].id;
     	this.lights[i].setPosition(this.graph.lightsList[i].position.x, this.graph.lightsList[i].position.y, this.graph.lightsList[i].position.z, this.graph.lightsList[i].position.w);
 	    this.lights[i].setDiffuse(this.graph.lightsList[i].diffuse.r, this.graph.lightsList[i].diffuse.g, this.graph.lightsList[i].diffuse.b, this.graph.lightsList[i].diffuse.a);
 	    this.lights[i].setAmbient(this.graph.lightsList[i].ambient.r, this.graph.lightsList[i].ambient.g, this.graph.lightsList[i].ambient.b, this.graph.lightsList[i].ambient.a);
@@ -46,10 +49,14 @@ XMLscene.prototype.initLights = function () {
 		this.lights[i].setVisible(true);
 
 	    this.lights[i].update();
+	    if(this.graph.lightsList[i].enabled)
+	    	this.lightsNo[this.graph.lightsList[i].id] = true;
+		else this.lightsNo[this.graph.lightsList[i].id] = false;
 
 	}
 
     this.shader.unbind();
+    this.interface.enableLights();
 };
 
 XMLscene.prototype.initCameras = function () {
@@ -350,4 +357,14 @@ XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMat
 
 	}
 
+};
+
+XMLscene.prototype.enableL = function(id, enabled) {
+    for (var i = 0; i < this.lights.length; i++) {
+        if (id == this.lights[i].id) {
+            if(enabled)
+            	this.lights[i].enable();
+            else this.lights[i].disable();
+        }
+    }
 };
