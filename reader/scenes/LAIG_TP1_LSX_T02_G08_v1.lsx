@@ -12,7 +12,7 @@
 
  <ILLUMINATION>
         <ambient r="1" g="0.52" b="0.5" a="1" />
-        <background r="1" g=".5" b=".5" a="1" />
+        <background r="0.05" g="0.05" b="0.05" a="1" />
 </ILLUMINATION>
 
 <LIGHTS>
@@ -26,7 +26,7 @@
 
     <LIGHT id="S_light2">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
-        <position x="4.5" y="9.0" z="6.0" w="0.0" />       <!-- light position -->
+        <position x="4.5" y="9.0" z="6.0" w="1.0" />       <!-- light position -->
         <ambient r="0.3" g="0.3" b="0.3" a="1.0" />        <!-- ambient component -->
         <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />        <!-- diffuse component -->
         <specular r="0.9" g="0.9" b="0.9" a="0.9" />       <!-- specular component -->
@@ -34,7 +34,7 @@
 
     <LIGHT id="S_light3">                                    <!-- light identifier -->
         <enable value ="1" />                            <!-- enable/disable -->
-        <position x="4.5" y="8.0" z="9.0" w="0.0" />         <!-- light position -->
+        <position x="4.5" y="8.0" z="9.0" w="1.0" />         <!-- light position -->
         <ambient r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- ambient component -->
         <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />        <!-- diffuse component -->
         <specular r="0.9" g="0.9" b="0.9" a="1.0" />       <!-- specular component -->
@@ -45,42 +45,42 @@
 
 <TEXTURES>
     <TEXTURE id="body">
-        <file path="wood.jpg" />                             <!-- path to file -->
+        <file path="textures/wood.jpg" />                             <!-- path to file -->
         <amplif_factor s="2.0" t="2.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <TEXTURE id="head">
-        <file path="head.png" />                             <!-- path to file -->
+        <file path="textures/head.png" />                             <!-- path to file -->
         <amplif_factor s="1000.0" t="1000.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <TEXTURE id="wallR">
-        <file path="wallR.jpg" />                             <!-- path to file -->
+        <file path="textures/wallR.jpg" />                             <!-- path to file -->
         <amplif_factor s="1.0" t="1.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <TEXTURE id="wallL">
-        <file path="wallL.jpg" />                             <!-- path to file -->
+        <file path="textures/wallL.jpg" />                             <!-- path to file -->
         <amplif_factor s="1.0" t="1.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <TEXTURE id="hat">
-        <file path="hat.jpg" />                             <!-- path to file -->
+        <file path="textures/hat.jpg" />                             <!-- path to file -->
         <amplif_factor s="16.0" t="16.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <TEXTURE id="floor">
-        <file path="floor.jpg" />                             <!-- path to file -->
+        <file path="textures/floor.jpg" />                             <!-- path to file -->
         <amplif_factor s="1.0" t="1.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <TEXTURE id="black">
-        <file path="black.jpg" />                             <!-- path to file -->
+        <file path="textures/black.jpg" />                             <!-- path to file -->
         <amplif_factor s="16.0" t="16.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <TEXTURE id="knife">
-        <file path="knife.jpg" />                             <!-- path to file -->
+        <file path="textures/knife.jpg" />                             <!-- path to file -->
         <amplif_factor s="16.0" t="16.0" />                <!-- x/s, y/t -->
     </TEXTURE>
 
