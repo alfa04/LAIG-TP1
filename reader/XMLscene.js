@@ -133,8 +133,10 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.texture["filePath"] = this.graph.texturesList[i].filePath;
 		this.texture["amplifFactor_S"] = this.graph.texturesList[i].amplifFactor_S;
 		this.texture["amplifFactor_T"] = this.graph.texturesList[i].amplifFactor_T;
-		this.texturesList.push(texture);	
+		this.texturesList.push(this.texture);
+		
 	}    
+
 
     //MATERIALS
 
@@ -147,8 +149,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.material.setDiffuse(this.graph.materialsList[i].diffuse.r, this.graph.materialsList[i].diffuse.g, this.graph.materialsList[i].diffuse.b, this.graph.materialsList[i].diffuse.a);
 		this.material.setAmbient(this.graph.materialsList[i].ambient.r, this.graph.materialsList[i].ambient.g, this.graph.materialsList[i].ambient.b, this.graph.materialsList[i].ambient.a);
 		this.material.setEmission(this.graph.materialsList[i].emission.r, this.graph.materialsList[i].emission.g, this.graph.materialsList[i].emission.b, this.graph.materialsList[i].emission.a);
-		this.materialsList.push(material);	
+		this.materialsList.push(this.material);	
 	}  
+
 
     //LEAVES
     this.setLeaves();
@@ -199,8 +202,7 @@ XMLscene.prototype.display = function () {
         //Nodes
 
         for(var i = 0; i < this.nodesList.length; i++){
-        	console.log(this.nodesList[i]);
-        /*
+        
         	var node = this.nodesList[i];
             this.pushMatrix();
             node["material"].setTexture(node["texture"]);
@@ -210,7 +212,7 @@ XMLscene.prototype.display = function () {
             node["material"].apply();
             this.multMatrix(node["matrix"]);
             node["primitive"].display();
-            this.popMatrix();*/
+            this.popMatrix();
         }
 	}
 
@@ -318,17 +320,17 @@ XMLscene.prototype.setNodes = function() {
 
 XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMatrix) {
 
-	if(nodeTexture == "null")
-		var nextNodeTexture = nodeTexture;
-	else{
-		this.nextNodeTexture = node.texture;
-	}
+	console.log(nodeTexture);
+	console.log(nodeMaterial);
 
-	if(nodeMaterial == "null")
-		var nextNodeMaterial = nodeMaterial;
-	else{
-		this.nextNodeMaterial = node.material;
-	}
+	var nextNodeTexture = node.texture;
+	if(node.texture == "null")
+		nextNodeTexture = nodeTexture;
+		
+	var nextNodeMaterial = node.material;
+	if(node.material == "null")
+		nextNodeMaterial = nodeMaterial;
+		
 		
 	var nextNodeMatrix = mat4.create();
 	mat4.multiply(nextNodeMatrix, nodeMatrix, node.matrix);
@@ -378,6 +380,7 @@ XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMat
 			}
 
 			this.nodesList.push(this.n);
+			console.log("asdasdasd" + this.n["id"] + this.n["texture"] + this.n["material"]);
 			continue;
 
 		}
