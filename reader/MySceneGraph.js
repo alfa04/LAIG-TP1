@@ -4,7 +4,7 @@ function MySceneGraph(filename, scene) {
 	
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
-	scene.graph=this;
+	scene.graph = this;
 		
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -85,7 +85,6 @@ MySceneGraph.prototype.onXMLReady=function()
 
 	this.loadedOk=true;
 	
-	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
 };
 
@@ -517,19 +516,9 @@ MySceneGraph.prototype.parseLeaves= function(rootElement) {
 		leafInfo.args.push(parseFloat(aux2[2].split(" ")[0]));
 		leafInfo.args.push(parseFloat(aux2[2].split(" ")[1]));
 		leafInfo.args.push(parseFloat(aux2[2].split(" ")[2]));
-
-		/*for(var i=0; i < 3; i++) {
-			for(var j=0; j < 3; j++) {
-				leafInfo.args.push(parseFloat(aux2[i].split(" ")[j]));
-			}
-		}*/
-		//console.log(leafInfo.args); 
 	}
 
 	this.leaveslist.push(leafInfo);
-	//if(leafInfo.type != "triangle")
-		//console.log("\tLEAF id: " + this.leafInfo["id"] + ", type: " + this.leafInfo["type"] + ", args: " + this.leafInfo["args"] + "\n");
-
 	}
 
 

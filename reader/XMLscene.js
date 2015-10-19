@@ -12,7 +12,6 @@ XMLscene.prototype.init = function (application) {
     this.initCameras();
 
 	this.enableTextures(true);
-    //this.gl.clearColor(1, 0.0, 0.0, 1.0);
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -76,10 +75,12 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {	//INITIALS
-		//frustum
+
+	//frustum
 	this.camera.near = this.graph.initialsInfo.frustum['near'];
     this.camera.far =  this.graph.initialsInfo.frustum['far'];
-    	//axis reference
+    
+    //axis reference
  
 	this.axis = new CGFaxis(this,this.graph.initialsInfo.reference['length']);
 
@@ -91,6 +92,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	
 	//ambient
 	this.setGlobalAmbientLight(this.graph.ambientInfo['r'],this.graph.ambientInfo['g'],this.graph.ambientInfo['b'],this.graph.ambientInfo['a']); 
+	
 	//LIGHTS
     this.initLights();
 
@@ -187,40 +189,6 @@ XMLscene.prototype.display = function () {
         }
 	}
 
-	    // Plane Wall
-	/*this.pushMatrix();
-	this.scale(15, 8, 0);
-	this.materialWall.apply();
-	this.wall.display();
-	this.popMatrix();*/
-
-	//this.materialtriangle.apply();
-	//this.cylinder.display();
-
-
-	//**************************************************************
-	//TESTES ÀS LEAFS INTRODUZIdas
-	//retangulo (primeira leaf logo posiçao zero no vector de leafs)
-	//this.materialWall.apply();
-	//console.log("certo" + this.leaveslist[0].type);
-	//this.leaveslist[0].display();
-	//triangulo
-	//this.materialtriangle.apply();
-	//this.leaveslist[7].display();
-	//esfera
-	//this.materialtriangle.apply();
-	//this.leaveslist[6].display();
-	//cilindro
-	//this.materialcylinder.apply();
-	//this.leaveslist[4].display();
-
-	//testes
- 	/*this.pushMatrix();
-	this.translate(0, 0, 1);
-	//this.materialtriangle.apply();
-	//this.triangle.display();
-	this.popMatrix();*/
-
     this.shader.unbind();
 };
 
@@ -243,16 +211,14 @@ XMLscene.prototype.setInitials = function() {
 };
 
 XMLscene.prototype.setLeaves = function() {
-	//console.log("yyyyyyyyyyyyyyyyyyyyyyyyyy" + this.graph.leaveslist[0]);
 	for (var i = 0; i < this.graph.leaveslist.length; i++) {
 		var leaf = this.graph.leaveslist[i];
-		//console.log("WWWWWWWWWWWWWWWWW"+leaf);
+
 		switch (leaf.type) {
             case "rectangle":
                 var rectangle = new Plane(this,leaf.args[0]);
                 rectangle.id = leaf.id;
                 this.leaveslist.push(rectangle);
-                //console.log("RRRRR"+leaf.args[0]);
                 break;
             case "cylinder":
                 cylinder = new MyCoveredCylinder(this,leaf.args);
@@ -274,7 +240,6 @@ XMLscene.prototype.setLeaves = function() {
 };
 
 XMLscene.prototype.findNode = function(id) {
-	
 	for(var i = 0; i<this.graph.nodesList.length; i++){
 		if(this.graph.nodesList[i].id == id){
 			return this.graph.nodesList[i];
@@ -288,6 +253,7 @@ XMLscene.prototype.setNodes = function() {
 
 	var root = this.findNode(this.graph.rootInfo["id"]);
     this.calcNodes(root, root.texture, root.material, root.matrix);
+
 };
 
 XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMatrix) {
@@ -326,7 +292,6 @@ XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMat
 			}
 
 			//materials
-
 			if(nextNodeMaterial == null)
 				this.n["material"] = null;
 
@@ -338,11 +303,13 @@ XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMat
 				}
 			}
 
+			//matrix
 			this.n["matrix"] = nextNodeMatrix;
 
 			for(var l = 0; l < this.leaveslist.length; l++){
 
 				if(this.leaveslist[l].id == this.n["id"]){
+					//primitive
 					this.n["primitive"] = this.leaveslist[l];
 					break;
 				}

@@ -24,7 +24,7 @@
         <specular r="0.7" g="0.7" b="0.7" a="1.0" />       <!-- specular component -->
     </LIGHT>
 
-    <LIGHT id="S_light2">                                    <!-- light identifier -->
+    <LIGHT id="light2">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="4.5" y="9.0" z="6.0" w="1.0" />       <!-- light position -->
         <ambient r="0.3" g="0.3" b="0.3" a="1.0" />        <!-- ambient component -->
@@ -32,7 +32,7 @@
         <specular r="0.9" g="0.9" b="0.9" a="0.9" />       <!-- specular component -->
     </LIGHT>
 
-    <LIGHT id="S_light3">                                    <!-- light identifier -->
+    <LIGHT id="light3">                                    <!-- light identifier -->
         <enable value ="1" />                            <!-- enable/disable -->
         <position x="4.5" y="8.0" z="9.0" w="1.0" />         <!-- light position -->
         <ambient r="0.4" g="0.4" b="0.4" a="1.0" />        <!-- ambient component -->
