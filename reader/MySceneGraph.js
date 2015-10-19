@@ -583,46 +583,48 @@ MySceneGraph.prototype.parseNodes= function(rootElement) {
 
 		var transformationsNodesLength = nodeInfo.children.length-1; 
 
-		var j = 2;
+		
 
-		for( ; j<transformationsNodesLength; j++){
+		for(var j = 2 ; j<transformationsNodesLength; j++){
 			if(nodeInfo.children[j].tagName == 'ROTATION'){
 				var rotationInfo = nodeInfo.children[j];
-				this.rotationInfo = [];
-				this.rotationInfo["axis"] = this.reader.getString(rotationInfo, "axis", true);
-				this.rotationInfo["angle"] = (this.reader.getFloat(rotationInfo, "angle", true) / 180) * Math.PI;
-				console.log("\t\tROTATION axis: " + this.rotationInfo["axis"] + ", angle(rad): " + this.rotationInfo["angle"] + "\n");
+				var rotationInfoTmp = [];
+				
+				rotationInfoTmp["axis"] = this.reader.getString(rotationInfo, "axis", true);
+				rotationInfoTmp["angle"] = this.reader.getFloat(rotationInfo, "angle", true) * Math.PI / 180;
+				console.log("\t\tROTATION axis: " + rotationInfoTmp["axis"] + ", angle(rad): " + rotationInfoTmp["angle"] + "\n");
 				var rotMatrix = [];
-				if(this.rotationInfo["axis"] == "x")
+				if(rotationInfoTmp["axis"] == "x")
 					this.rotMatrix = [1,0,0];
-				else if(this.rotationInfo["axis"] == "y")
+				else if(rotationInfoTmp["axis"] == "y")
 					this.rotMatrix = [0,1,0];
-				else if(this.rotationInfo["axis"] == "z")
+				else if(rotationInfoTmp["axis"] == "z")
 					this.rotMatrix = [0,0,1];
-				mat4.rotate(myNode.matrix, myNode.matrix, this.rotationInfo["angle"], this.rotMatrix);
-				transformations.push(rotationInfo);
+				mat4.rotate(myNode.matrix, myNode.matrix, rotationInfoTmp["angle"], this.rotMatrix);
+				transformations.push(rotationInfoTmp);
 			}
 
-			if(nodeInfo.children[j].tagName == 'TRANSLATION'){
+			else if(nodeInfo.children[j].tagName == 'TRANSLATION'){
 				var translationInfo = nodeInfo.children[j];
-				this.translationInfo = [];
-				this.translationInfo["x"] = this.reader.getFloat(translationInfo, "x", true);
-				this.translationInfo["y"] = this.reader.getFloat(translationInfo, "y", true);
-				this.translationInfo["z"] = this.reader.getFloat(translationInfo, "z", true);
-				console.log("\t\tTRANSLATION x: " + this.translationInfo["x"] + ", y: " + this.translationInfo["y"] + ", z: " + this.translationInfo["z"] + "\n");
-				mat4.translate(myNode.matrix, myNode.matrix, translationInfo);
-				transformations.push(translationInfo);
+				var translationInfoTmp = [];
+
+				translationInfoTmp.push(this.reader.getFloat(translationInfo, "x", true));
+				translationInfoTmp.push(this.reader.getFloat(translationInfo, "y", true));
+				translationInfoTmp.push(this.reader.getFloat(translationInfo, "z", true));
+				console.log("\t\tTRANSLATION: " + this.translationInfoTmp + "\n");
+				mat4.translate(myNode.matrix, myNode.matrix, translationInfoTmp);
+				transformations.push(translationInfoTmp);	
 			}
 
-			if(nodeInfo.children[j].tagName == 'SCALE'){
+			else if(nodeInfo.children[j].tagName == 'SCALE'){
 				var scaleInfo = nodeInfo.children[j];
-				this.scaleInfo = [];
-				this.scaleInfo["sx"] = this.reader.getFloat(scaleInfo, "sx", true);
-				this.scaleInfo["sy"] = this.reader.getFloat(scaleInfo, "sy", true);
-				this.scaleInfo["sz"] = this.reader.getFloat(scaleInfo, "sz", true);
-				console.log("\t\tSCALE sx: " + this.scaleInfo["sx"] + ", sy: " + this.scaleInfo["sy"] + ", sz: " + this.scaleInfo["sz"] + "\n");
-				mat4.scale(myNode.matrix, myNode.matrix, scaleInfo);
-				transformations.push(scaleInfo);
+				var scaleInfoTmp = [];
+
+				scaleInfoTmp.push(this.reader.getFloat(scaleInfo, "sx", true));
+				scaleInfoTmp.push(this.reader.getFloat(scaleInfo, "sy", true));
+				scaleInfoTmp.push(this.reader.getFloat(scaleInfo, "sz", true));
+				mat4.scale(myNode.matrix, myNode.matrix, scaleInfoTmp);
+				transformations.push(scaleInfoTmp);
 			}
 
 		}

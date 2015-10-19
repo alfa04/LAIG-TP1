@@ -213,6 +213,7 @@ XMLscene.prototype.display = function () {
             this.multMatrix(node["matrix"]);
             node["primitive"].display();
             this.popMatrix();
+            console.log(node["id"] + node["texture"].id + node["material"].id + node["primitive"].id);
         }
 	}
 
@@ -230,23 +231,24 @@ XMLscene.prototype.display = function () {
 	//**************************************************************
 	//TESTES ÀS LEAFS INTRODUZIdas
 	//retangulo (primeira leaf logo posiçao zero no vector de leafs)
-	/*this.materialWall.apply();
-	this.leaveslist[0].display();
+	//this.materialWall.apply();
+	//console.log("certo" + this.leaveslist[0].type);
+	//this.leaveslist[0].display();
 	//triangulo
-	this.materialtriangle.apply();
-	this.leaveslist[7].display();
+	//this.materialtriangle.apply();
+	//this.leaveslist[7].display();
 	//esfera
-	this.materialtriangle.apply();
-	this.leaveslist[6].display();
+	//this.materialtriangle.apply();
+	//this.leaveslist[6].display();
 	//cilindro
-	this.materialcylinder.apply();
-	this.leaveslist[4].display();
+	//this.materialcylinder.apply();
+	//this.leaveslist[4].display();
 
 	//testes
- 	this.pushMatrix();
+ 	/*this.pushMatrix();
 	this.translate(0, 0, 1);
-	this.materialtriangle.apply();
-	this.triangle.display();
+	//this.materialtriangle.apply();
+	//this.triangle.display();
 	this.popMatrix();*/
 
     this.shader.unbind();
@@ -320,9 +322,6 @@ XMLscene.prototype.setNodes = function() {
 
 XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMatrix) {
 
-	console.log(nodeTexture);
-	console.log(nodeMaterial);
-
 	var nextNodeTexture = node.texture;
 	if(node.texture == "null")
 		nextNodeTexture = nodeTexture;
@@ -380,7 +379,6 @@ XMLscene.prototype.calcNodes = function(node, nodeTexture, nodeMaterial, nodeMat
 			}
 
 			this.nodesList.push(this.n);
-			console.log("asdasdasd" + this.n["id"] + this.n["texture"] + this.n["material"]);
 			continue;
 
 		}
