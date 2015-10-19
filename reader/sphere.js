@@ -133,3 +133,5 @@
  	this.initGLBuffers();
  	
  };
+sphere.prototype.updateTex = function(S, T) {
+};
